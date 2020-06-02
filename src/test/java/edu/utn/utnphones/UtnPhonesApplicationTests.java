@@ -1,10 +1,10 @@
-package edu.utn.phones;
+package edu.utn.utnphones;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PhonesApplicationTests {
+class UtnPhonesApplicationTests {
 
 	@Test
 	void contextLoads() {

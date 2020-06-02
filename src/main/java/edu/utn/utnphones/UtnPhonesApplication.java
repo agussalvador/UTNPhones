@@ -1,13 +1,13 @@
-package edu.utn.phones;
+package edu.utn.utnphones;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PhonesApplication {
+public class UtnPhonesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhonesApplication.class, args);
+		SpringApplication.run(UtnPhonesApplication.class, args);
 	}
 
 }
