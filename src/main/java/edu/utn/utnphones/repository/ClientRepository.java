@@ -1,6 +1,5 @@
 package edu.utn.utnphones.repository;
 
-import edu.utn.utnphones.domain.Client;
 import edu.utn.utnphones.projection.ClientCallProjection;
 import edu.utn.utnphones.projection.LastCalls;
 import org.springframework.data.jpa.repository.JpaRepository;

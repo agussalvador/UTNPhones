@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,14 +36,14 @@ public class Bill {
 
     @Column(name = "expirate_date")
     private LocalDateTime expirationDate;
-/*
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "id_telephone_line")
+    @Fetch(FetchMode.JOIN)
     private PhoneLine phoneLine;
 
 
-    @OneToMany(mappedBy = "bill")
-    private List<Call> calls;*/
+
 
 }

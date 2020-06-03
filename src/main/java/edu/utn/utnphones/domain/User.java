@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,27 +15,31 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "users")
-@DiscriminatorColumn(name="user_role")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Person implements Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Integer personId;
 
-    @Column(name = "firstname")
+    private String dni;
+
     private String firstname;
 
-    @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "dni")
-    private String dni;
+    @Column(name = "pwd")
+    private String password;
+
+    private Boolean enabled;
+
+    @Column(name = "user_role")
+    private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "id_city")
+    @Fetch(FetchMode.JOIN)
     private City city;
 
 

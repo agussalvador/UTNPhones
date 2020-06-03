@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +21,6 @@ public class Province implements Serializable {
 
     @Column(name = "province_name")
     private String name;
-
-    @OneToMany(mappedBy = "province")
-    private List<City> cities;
 
 
 }

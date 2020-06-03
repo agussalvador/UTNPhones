@@ -1,8 +1,6 @@
 package edu.utn.utnphones.controller;
 
 import edu.utn.utnphones.dto.ClientPhoneLineRequestDto;
-import edu.utn.utnphones.exceptions.ClientAlreadyExistsException;
-import edu.utn.utnphones.exceptions.ValidateDniException;
 import edu.utn.utnphones.projection.ClientCallProjection;
 import edu.utn.utnphones.projection.LastCalls;
 import edu.utn.utnphones.service.ClientService;

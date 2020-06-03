@@ -21,7 +21,7 @@ public class Call {
     @GeneratedValue()
     @Column(name = "id_call")
     private Integer callId;
-/*
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_telephone_origin")
     @Fetch(FetchMode.JOIN)
@@ -52,6 +52,7 @@ public class Call {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "id_bill")
-    private Bill bill;*/
+    @Fetch(FetchMode.JOIN)
+    private Bill bill;
 
 }

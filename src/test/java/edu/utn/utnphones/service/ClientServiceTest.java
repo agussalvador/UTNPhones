@@ -1,6 +1,5 @@
 package edu.utn.utnphones.service;
 
-import edu.utn.utnphones.exceptions.ValidateDniException;
 import edu.utn.utnphones.repository.ClientRepository;
 import org.junit.Before;
 import org.junit.Test;

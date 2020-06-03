@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class PhoneLine implements Serializable {
     private String number;
 
     @Column(name = "type_line")
-    private String type;
+    private TypeLine type;
 
     @Column(name = "enabled")
     private Boolean enabled;
@@ -33,12 +34,8 @@ public class PhoneLine implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "id_user")
-    private Client client;
-
-    /*
-    @OneToMany(mappedBy = "phoneLine")
-    private List<Bill> bills;*/
-
+    @Fetch(FetchMode.JOIN)
+    private User user;
 
 
 }

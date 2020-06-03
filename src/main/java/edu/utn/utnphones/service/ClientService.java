@@ -1,12 +1,10 @@
 package edu.utn.utnphones.service;
 
 import edu.utn.utnphones.dto.ClientPhoneLineRequestDto;
-import edu.utn.utnphones.exceptions.ClientAlreadyExistsException;
 import edu.utn.utnphones.projection.ClientCallProjection;
 import edu.utn.utnphones.projection.LastCalls;
 import edu.utn.utnphones.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

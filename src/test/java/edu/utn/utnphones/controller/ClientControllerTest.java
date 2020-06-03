@@ -1,6 +1,5 @@
 package edu.utn.utnphones.controller;
 
-import edu.utn.utnphones.exceptions.ValidateDniException;
 import edu.utn.utnphones.projection.LastCalls;
 import edu.utn.utnphones.projection.MockLastCalls;
 import edu.utn.utnphones.service.ClientService;

@@ -1,6 +1,5 @@
 package edu.utn.utnphones.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ public class Tariff {
     private Double costPrice;
 
     private Double price;
-/*
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city_origin")
@@ -36,5 +34,5 @@ public class Tariff {
     @JoinColumn(name = "id_city_destination")
     @Fetch(FetchMode.JOIN)
     City cityDestination;
-*/
+
 }
