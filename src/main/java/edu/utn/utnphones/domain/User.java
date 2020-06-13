@@ -20,7 +20,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private Integer personId;
+    private Integer userId;
 
     private String dni;
 
@@ -34,6 +34,7 @@ public class User implements Serializable {
     private Boolean enabled;
 
     @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)

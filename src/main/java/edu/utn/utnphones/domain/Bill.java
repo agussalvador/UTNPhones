@@ -37,6 +37,9 @@ public class Bill {
     @Column(name = "expirate_date")
     private LocalDateTime expirationDate;
 
+    @Column(name = "is_pay")
+    private Boolean isPay;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "id_telephone_line")

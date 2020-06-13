@@ -1,7 +1,6 @@
 package edu.utn.utnphones.session;
 
 
-import edu.utn.utnphones.domain.Role;
 import edu.utn.utnphones.domain.User;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +10,14 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-public class SessionManager {
-
+public class SessionManager /*extends OncePerRequestFilter*/{
 
     Map<String, Session> sessionMap;
     int sessionExpiration = 600000;
 
-
     public SessionManager() {
         sessionMap = new Hashtable<>();
-        createSession(new User(1, "123", "aa", "bb", "pwd", true, Role.CLIENT, null), "1");
+        createSession(new User(), "1");
     }
 
     public String createSession(User user) {
@@ -60,6 +57,23 @@ public class SessionManager {
     }
 
     public User getCurrentUser(String token) {
+        if(getSession(token) == null) return null;
+
         return getSession(token).getLoggedUser();
     }
+
+    /*
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String sessionToken = request.getHeader("Authorization");
+        User currentUser = getCurrentUser(sessionToken);
+        if (null != currentUser && currentUser.getRole().equals(Role.USER)) {
+            filterChain.doFilter(request, response);
+        } else {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+        }
+    }*/
 }

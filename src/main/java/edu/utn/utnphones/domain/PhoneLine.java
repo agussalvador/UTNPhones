@@ -26,6 +26,7 @@ public class PhoneLine implements Serializable {
     private String number;
 
     @Column(name = "type_line")
+    @Enumerated(EnumType.STRING)
     private TypeLine type;
 
     @Column(name = "enabled")
