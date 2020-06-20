@@ -5,7 +5,5 @@ public class InvalidLoginException extends Throwable {
         super(cause);
     }
 
-    public String getMessage() {
-        return "Invalid login";
-    }
+
 }

@@ -20,14 +20,14 @@ public class PhoneLine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_telephone_line")
-    private Integer personId;
+    private Long phoneLineId;
 
     @Column(name = "phone_number")
     private String number;
 
     @Column(name = "type_line")
     @Enumerated(EnumType.STRING)
-    private TypeLine type;
+    private TypeLine typeLine;
 
     @Column(name = "enabled")
     private Boolean enabled;

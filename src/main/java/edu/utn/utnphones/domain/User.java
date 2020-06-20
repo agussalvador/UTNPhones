@@ -1,6 +1,7 @@
 package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private Integer userId;
+    private Long userId = 0L;
 
     private String dni;
 
@@ -31,6 +33,7 @@ public class User implements Serializable {
     @Column(name = "pwd")
     private String password;
 
+    @JsonIgnore
     private Boolean enabled;
 
     @Column(name = "user_role")

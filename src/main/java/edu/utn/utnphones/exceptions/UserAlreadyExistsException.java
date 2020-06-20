@@ -7,6 +7,6 @@ public class UserAlreadyExistsException extends RecordExistsException {
     }
 
     public String getMessage() {
-        return "User Already Exist!!";
+        return "User Already Exist!";
     }
 }

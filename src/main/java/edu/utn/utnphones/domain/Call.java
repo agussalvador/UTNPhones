@@ -20,7 +20,7 @@ public class Call {
     @Id
     @GeneratedValue()
     @Column(name = "id_call")
-    private Integer callId;
+    private Long callId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_telephone_origin")

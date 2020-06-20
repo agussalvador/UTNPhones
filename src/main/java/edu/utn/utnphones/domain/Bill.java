@@ -20,7 +20,7 @@ public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_bill")
-    private Integer billId;
+    private Long billId;
 
     @Column(name = "count_calls")
     private Integer countCalls;

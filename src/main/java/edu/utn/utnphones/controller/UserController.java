@@ -1,13 +1,13 @@
 package edu.utn.utnphones.controller;
 
-
-
 import edu.utn.utnphones.domain.User;
+import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -26,34 +26,36 @@ public class UserController {
         if ((dni != null) && (password != null)) {
             return userService.login(dni, password);
         } else {
-            throw new ValidationException("username and password must have a value");
+            throw new ValidationException("dni and password must have a value");
         }
     }
 
-
-    public User getUserById(Integer userId) {
-        return userService.getUser(userId);
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, JpaSystemException {
+        return userService.addClient(newClient);
     }
 
-
-    public User createUser(User user) throws UserAlreadyExistsException {
-        return userService.createUser(user);
+    public User getUserById(Integer id) throws UserNotFoundException {
+        return userService.getUserById(id);
     }
 
-    public void removeUser(User user) throws UserNotFoundException {
-        userService.removeUser(user);
-    }
-
-    public void removeUsers(List<User> userList) throws UserNotFoundException {
-        for (User u : userList) {
-            userService.removeUser(u);
+    public User getUserByDni(String dni) throws UserNotFoundException {
+        if(dni!=null){
+            return userService.getUserByDni(dni);
+        }else{
+            throw new UserNotFoundException();
         }
     }
 
-
-    public void updateUser(User user) throws UserNotFoundException {
-        userService.updateUser(user);
+    public List<User> getClients()throws JpaSystemException{
+        return userService.getClients();
     }
 
+    public void updateClient(String dni, User newClient)throws JpaSystemException{
+        userService.updateClient(dni, newClient);
+    }
+
+    public void deleteClient(String  dni)throws JpaSystemException{
+        userService.deleteClient(dni);
+    }
 
 }
