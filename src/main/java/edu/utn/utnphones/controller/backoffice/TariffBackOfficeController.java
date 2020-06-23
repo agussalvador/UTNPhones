@@ -9,12 +9,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tariff")
-public class TariffController {
+public class TariffBackOfficeController {
 
-    private static TariffService tariffService;
+    private final TariffService tariffService;
 
     @Autowired
-    public TariffController(TariffService tariffService) {
+    public TariffBackOfficeController(TariffService tariffService) {
         this.tariffService = tariffService;
     }
 
@@ -38,5 +38,10 @@ public class TariffController {
     public void deleteTariff(@PathVariable Integer idCityOrigin, @PathVariable Integer idCityDestination){
         tariffService.deleteTariff(idCityOrigin,idCityDestination);
     }
+
+
+
+
+
 }
 

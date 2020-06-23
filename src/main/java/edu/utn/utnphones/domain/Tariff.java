@@ -18,7 +18,7 @@ public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tariff")
-    private Integer tariffId;
+    private Long tariffId;
 
     @Column(name = "cost_price")
     private Double costPrice;

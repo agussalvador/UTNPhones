@@ -9,15 +9,15 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
 
     /*CREATE*/
     @Procedure(procedureName = "sp_insert_tariff")
-    public void create(@Param("pId_city_origin") Integer idCityOrigin,
-                         @Param("pId_city_destination") Integer idCityDestination,
+    public void create(@Param("pId_city_origin") Long idCityOrigin,
+                         @Param("pId_city_destination") Long idCityDestination,
                          @Param("pCost_price") Double costPrice,
                          @Param("pPrice") Double price);
 
     /*UPDATE*/
     @Procedure(procedureName = "sp_update_tariff")
-    public void update(@Param("pId_city_origin") Integer idCityOrigin,
-                       @Param("pId_city_destination") Integer idCityDestination,
+    public void update(@Param("pId_city_origin") Long idCityOrigin,
+                       @Param("pId_city_destination") Long idCityDestination,
                        @Param("pCost_price") Double costPrice,
                        @Param("pPrice") Double price);
 

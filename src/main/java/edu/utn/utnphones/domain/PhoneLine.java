@@ -1,9 +1,8 @@
 package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -29,7 +28,7 @@ public class PhoneLine implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeLine typeLine;
 
-    @Column(name = "enabled")
+    @JsonIgnore
     private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)

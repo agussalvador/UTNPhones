@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 public class ClientRequestDto implements Serializable {
 
-    private Integer cityId;
+    private Long cityId;
 
     private String firstname;
 

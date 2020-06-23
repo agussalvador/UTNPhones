@@ -3,6 +3,7 @@ package edu.utn.utnphones.controller;
 
 import edu.utn.utnphones.dto.ErrorResponseDto;
 import edu.utn.utnphones.exceptions.InvalidLoginException;
+import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,16 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleParseException() {
         return new ErrorResponseDto(4, "Not valid dates");
     }
+
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return new ErrorResponseDto(5, ex.getMessage());
+    }
+
+
+
 
 
 

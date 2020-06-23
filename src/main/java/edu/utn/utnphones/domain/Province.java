@@ -17,7 +17,7 @@ public class Province implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_province")
-    private Integer provinceId;
+    private Long provinceId;
 
     @Column(name = "province_name")
     private String name;

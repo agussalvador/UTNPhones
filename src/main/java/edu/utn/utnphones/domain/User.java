@@ -2,6 +2,7 @@ package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.utn.utnphones.projection.PhoneLineView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private Long userId = 0L;
+    private Long userId;
 
     private String dni;
 
@@ -46,5 +47,7 @@ public class User implements Serializable {
     @Fetch(FetchMode.JOIN)
     private City city;
 
+    //@OneToMany(mappedBy = "user")
+    //private List<PhoneLine> phoneLines;
 
 }
