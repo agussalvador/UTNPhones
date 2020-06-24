@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 
 public interface CallView {
 
-    String getFullNumberOrigin();
-    String getFullNumberDestination();
+    String getDni();
+
+    String getPhoneNumberOrigin();
+    String getPhoneNumberDestination();
 
     String getCityOrigin();
     String getCityDestination();
@@ -13,8 +15,5 @@ public interface CallView {
     Integer getDuration();
 
     LocalDateTime getDate();
-
-    Long getIdBill();
-
 
 }

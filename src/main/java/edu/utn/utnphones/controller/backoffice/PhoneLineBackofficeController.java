@@ -44,7 +44,7 @@ public class PhoneLineBackofficeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni){
+    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni") String dni){
 
         try{
             List<PhoneLineView> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
@@ -53,6 +53,17 @@ public class PhoneLineBackofficeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+        /*
+        - Update PhoneLines (By Id/Number) 	-> PUT:     localhost:8080/api/backoffice/phone-lines?number='0223-5567778'
+        - Delete PhoneLines (By Id/Number) 	-> DELETE:  localhost:8080/api/backoffice/phone-lines?number='0223-5567778'
+        */
+
+
+
+
 
 
     private URI getLocation(PhoneLine phoneLine) {

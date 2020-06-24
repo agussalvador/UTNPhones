@@ -4,15 +4,25 @@ import edu.utn.utnphones.controller.BillController;
 import edu.utn.utnphones.controller.CallController;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
+import edu.utn.utnphones.exceptions.ValidationException;
+import edu.utn.utnphones.projection.CallView;
+import edu.utn.utnphones.projection.MostCalledDestinationView;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/web/")
+@RequestMapping("/api/web")
 public class UserWebController {
 
     private final CallController callController;
@@ -28,37 +38,47 @@ public class UserWebController {
 
 
 
-		/* todo lamadas realizadas x el usuario logueado, por rango de fechas.
-		    GET: /api/web/calls?from='12/05/2020'&to='12/06/2020' */
-
-
-
-
-
-        /* todo facturas x el usuario logueado, por rango de fechas.
+    /* todo facturas x el usuario logueado, por rango de fechas.
             GET: /api/web/bills?from='12/05/2020'&to='12/06/2020' */
 
 
+    // llamadas realizadas x el usuario logueado, por rango de fechas.
+    @GetMapping("/calls")
+    public ResponseEntity<List<CallView>> getCalls(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "from", required = false) String from, @RequestParam(value = "to", required = false) String to) throws ParseException, ValidationException, UserNotFoundException {
 
+        User currentUser = getCurrentUser(sessionToken);
+        List<CallView> calls = new ArrayList<>();
+        try{
+            if ((from != null) && (to != null)) {
+                Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(from);
+                Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(to);
+                calls = callController.getCallsByUserFilterByDate(currentUser.getDni(), fromDate, toDate);
+            } else {
+                calls = callController.getCallsByDni(currentUser.getDni());
+            }
+            return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }catch (JpaSystemException ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
+    //  TOP 10 destinos más llamados por el usuario.
+    @GetMapping("/calls/cities")
+    public ResponseEntity<List<MostCalledDestinationView>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException, ValidationException {
 
-
-        /*todo  TOP 10 Destinos (ciudades o phoneLines) mas Llamados por el usuario logueado.
-             GET: /api/web/cities*/
-
-
-
+        List<MostCalledDestinationView> callsDestination = new ArrayList<>();
+        try{
+            callsDestination = callController.getTOP10MostCalledDestination(getCurrentUser(sessionToken).getDni());
+            return (callsDestination.size() > 0) ? ResponseEntity.ok(callsDestination) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }catch (JpaSystemException ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
     private User getCurrentUser(String sessionToken) throws UserNotFoundException {
         return Optional.ofNullable(sessionManager.getCurrentUser(sessionToken)).orElseThrow(UserNotFoundException::new);
     }
-
-
-
-
-
-
 
 
 }

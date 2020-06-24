@@ -15,5 +15,4 @@ public interface ClientView {
     Integer getCountPhoneLines();
 
 
-
 }
