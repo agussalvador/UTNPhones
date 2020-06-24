@@ -35,4 +35,25 @@ public interface CallDao extends JpaRepository<Call, Long> {
     List<MostCalledDestinationView> getTOP10MostCalledDestination(@Param("dni") String dni) throws JpaSystemException;
 
 
+
+    /*Parcial  06-01-2020  */
+    /*
+    * Profesor  21:16
+    *   @Abel Acuña Endpoint que devuelva: las ultimas 3 lineas que llamo una persona X
+    * */
+    @Query(value = " select \t\t\n" +
+            "\t\tdni,\n" +
+            "\t\tphone_number_destination as phoneLineDestination ,\n" +
+            "\t\tcity_destination as cityDestination,\n" +
+            "\t\tcall_date as dateCall\n" +
+            "\t\tfrom v_calls \n" +
+            "\t\twhere dni = :dni\n" +
+            "\t\tgroup by (call_date)\n" +
+            "\t\torder by call_date desc\n" +
+            "\t\tlimit 3\n", nativeQuery = true)
+    public List<CallView> getLast3CallsByDni(@Param("dni") String dni );
+
+
+
+
 }
