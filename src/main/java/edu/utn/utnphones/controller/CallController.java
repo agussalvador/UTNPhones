@@ -1,5 +1,6 @@
 package edu.utn.utnphones.controller;
 
+import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.projection.MostCalledDestinationView;
@@ -21,9 +22,9 @@ public class CallController {
         this.callService = callService;
     }
 
-    public List<CallView> getCallsByDni(String dni) throws ValidationException, JpaSystemException {
+    public List<CallView> getCallsByDni(String dni) throws ValidationException, JpaSystemException, UserNotFoundException {
 
-        if(dni!=null){
+        if(!dni.isEmpty()){
             return callService.getCallsByDni(dni);
         }else{
             throw new ValidationException("dni have a value");
@@ -47,5 +48,14 @@ public class CallController {
             throw new ValidationException("dni have a value");
         }
     }
+
+
+    /*Parcial  06-01-2020  */
+    public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException {
+
+        return callService.getLast3CallsByDni(dni);
+    }
+
+
 
 }

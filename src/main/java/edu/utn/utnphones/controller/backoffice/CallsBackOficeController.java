@@ -1,6 +1,7 @@
 package edu.utn.utnphones.controller.backoffice;
 
 import edu.utn.utnphones.controller.CallController;
+import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.projection.ClientView;
@@ -20,23 +21,39 @@ import java.util.List;
 public class CallsBackOficeController {
 
     private final CallController callController;
-    private SessionManager sessionManager;
 
     @Autowired
-    public CallsBackOficeController(CallController callController, SessionManager sessionManager) {
+    public CallsBackOficeController(CallController callController) {
         this.callController = callController;
-        this.sessionManager = sessionManager;
     }
 
     @GetMapping
-    public ResponseEntity<List<CallView>> getCallsByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni") String dni) throws ValidationException {
+    public ResponseEntity<List<CallView>> getCallsByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
         try{
             List<CallView> calls = callController.getCallsByDni(dni);
             return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }catch (JpaSystemException ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
+
+    /*Parcial  01-06-2020  */
+    @GetMapping("/last-calls")
+    public ResponseEntity<List<CallView>> getLast3CallsByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
+        try{
+            List<CallView> calls = callController.getLast3CallsByDni(dni);
+            return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }catch (JpaSystemException ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
+
+
+
+
+
 
 }
