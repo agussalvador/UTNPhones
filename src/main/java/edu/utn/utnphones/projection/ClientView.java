@@ -23,5 +23,4 @@ public interface ClientView {
     void setCountPhoneLines(Integer countPhoneLines);
 
 
-
 }

@@ -41,7 +41,6 @@ public class Bill {
     private Boolean isPay;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
     @JoinColumn(name = "id_telephone_line")
     @Fetch(FetchMode.JOIN)
     private PhoneLine phoneLine;
