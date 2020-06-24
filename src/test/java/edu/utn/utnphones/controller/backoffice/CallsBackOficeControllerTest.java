@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -36,7 +37,6 @@ public class CallsBackOficeControllerTest {
         callView = factory.createProjection(CallView.class);
 
     }
-
 
     @Test
     public void testGetCallsByDniOk() throws ValidationException, UserNotFoundException {
@@ -71,6 +71,34 @@ public class CallsBackOficeControllerTest {
         assertEquals(204, response.getStatusCodeValue());
     }
 
+    @Test
+    public void testGetCallsByDniUserNotExist() throws ValidationException, UserNotFoundException {
+
+        String dni = "3216954";
+
+        when(callController.getCallsByDni(dni)).thenThrow(UserNotFoundException.class);
+
+        assertThrows(UserNotFoundException.class, () -> {  callsBackOficeController.getCallsByDni(dni); });
+    }
+
+    @Test
+    public void testGetCallsByDniEmpty() throws ValidationException, UserNotFoundException {
+
+        String dni = "";
+
+        when(callController.getCallsByDni(dni)).thenThrow(ValidationException.class);
+
+        assertThrows(ValidationException.class, () -> {  callsBackOficeController.getCallsByDni(dni); });
+
+    }
+
+
+
+
+
+
+
+
 
 
     @Test
@@ -96,8 +124,6 @@ public class CallsBackOficeControllerTest {
 
     }
 
-
-    //test no content
     @Test
     public void testGetLast3CallsByDniNoContent() throws UserNotFoundException, ValidationException {
 
@@ -109,6 +135,5 @@ public class CallsBackOficeControllerTest {
 
         assertEquals(204, response.getStatusCodeValue());
     }
-
 
 }
