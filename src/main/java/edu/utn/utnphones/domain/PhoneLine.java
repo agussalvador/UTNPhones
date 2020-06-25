@@ -13,8 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "telephone_lines")
-@Builder
+@Entity
+@Table(name = "telephone_lines")
 public class PhoneLine implements Serializable {
 
     @Id
@@ -34,10 +34,8 @@ public class PhoneLine implements Serializable {
     private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
     @JoinColumn(name = "id_user")
-    @Fetch(FetchMode.JOIN)
+    @JsonBackReference
     private User user;
-
 
 }

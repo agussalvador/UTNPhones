@@ -1,6 +1,7 @@
 package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,14 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "bills")
-@Builder
+@Entity
+@Table(name = "bills")
 public class Bill {
 
     @Id
@@ -46,7 +49,8 @@ public class Bill {
     @Fetch(FetchMode.JOIN)
     private PhoneLine phoneLine;
 
-
-
+    @OneToMany(mappedBy = "bill")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    List<Call> calls = new ArrayList<Call>();
 
 }

@@ -32,7 +32,7 @@ public class PhoneLineBackofficeController {
     }
 
     @PostMapping
-    public ResponseEntity newPhoneLine(@RequestBody PhoneLineRequestDto newPhoneLine) {
+    public ResponseEntity newPhoneLine(@RequestBody PhoneLineRequestDto newPhoneLine) throws ValidationException, UserNotFoundException {
 
         PhoneLine phoneLine = phoneLineController.addPhoneLine(newPhoneLine);
         return ResponseEntity.created(getLocation(phoneLine)).build();

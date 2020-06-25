@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.jpa.JpaSystemException;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +18,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 

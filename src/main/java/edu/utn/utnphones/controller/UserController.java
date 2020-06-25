@@ -2,10 +2,10 @@ package edu.utn.utnphones.controller;
 
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.ClientRequestDto;
+import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.ClientView;
 import edu.utn.utnphones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -31,26 +31,24 @@ public class UserController {
         }
     }
 
-    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, JpaSystemException {
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, JpaSystemException, ValidationException, CityNotFoundException {
         return userService.addClient(newClient);
     }
 
-    public User getUserById(Long id) throws UserNotFoundException {
-        return userService.getUserById(id);
-    }
-
-    public User getClientByDni(String dni) throws JpaSystemException, UserNotFoundException, ValidationException {
-            if ((dni != null) ) {
+    public User getClientByDni(String dni) throws UserNotFoundException, ValidationException {
+        if ((dni != null) &&(!dni.isEmpty()) ) {
             return userService.getClientByDni(dni);
         } else {
             throw new ValidationException("dni must have a value");
         }
     }
 
-    public List<ClientView> getAllClients()throws JpaSystemException{
+    public List<User> getAllClients()throws JpaSystemException{
         return userService.getAllClients();
     }
 
+
+    /*
     public void updateClient(String dni, User newClient)throws JpaSystemException{
         userService.updateClient(dni, newClient);
     }
@@ -58,5 +56,5 @@ public class UserController {
     public void deleteClient(String  dni)throws JpaSystemException{
         userService.deleteClient(dni);
     }
-
+*/
 }

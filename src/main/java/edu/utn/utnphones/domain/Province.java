@@ -11,8 +11,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "provinces")
-@Builder
+@Entity
+@Table(name = "provinces")
 public class Province implements Serializable {
 
     @Id
@@ -22,6 +22,5 @@ public class Province implements Serializable {
 
     @Column(name = "province_name")
     private String name;
-
 
 }

@@ -3,6 +3,7 @@ package edu.utn.utnphones.controller.backoffice;
 import edu.utn.utnphones.controller.UserController;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.ClientRequestDto;
+import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
@@ -24,48 +25,35 @@ import java.util.List;
 public class ClientBackOfficeController {
 
     private final UserController userController;
-    private final SessionManager sessionManager;
 
     @Autowired
-    public ClientBackOfficeController(UserController userController, SessionManager sessionManager) {
+    public ClientBackOfficeController(UserController userController) {
         this.userController = userController;
-        this.sessionManager = sessionManager;
     }
 
     @PostMapping
-    public ResponseEntity<User> addNewClient(@RequestHeader("Authorization") String sessionToken, @RequestBody ClientRequestDto newClient) throws UserAlreadyExistsException{
+    public ResponseEntity<User> addNewClient(@RequestBody ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException {
 
-        try {
-            User user = userController.addClient(newClient);
-            return ResponseEntity.created(getLocation(user)).build();
-        } catch (JpaSystemException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        User user = userController.addClient(newClient);
+        return ResponseEntity.created(getLocation(user)).build();
     }
 
     @GetMapping
-    public ResponseEntity<User> getClientByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni) throws ValidationException, UserNotFoundException {
+    public ResponseEntity<User> getClientByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
 
-        try {
-            User client = userController.getClientByDni(dni);
-            return ResponseEntity.ok(client);
-        } catch (JpaSystemException e ) {
-            throw new UserNotFoundException();
-        }
+        User client = userController.getClientByDni(dni);
+        return ResponseEntity.ok(client);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ClientView>> getAllUsers(@RequestHeader("Authorization") String sessionToken){
+    public ResponseEntity<List<User>> getAllUsers(){
 
-        List<ClientView> clients = new ArrayList<>();
-        try{
-            clients = userController.getAllClients();
-            return (clients.size() != 0) ? ResponseEntity.ok(clients) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<User> clients = new ArrayList<>();
+        clients = userController.getAllClients();
+        return (clients.size() != 0) ? ResponseEntity.ok(clients) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /*
     @PutMapping
     public ResponseEntity<User> updateUserByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni , @RequestBody User newClient){
 
@@ -87,6 +75,7 @@ public class ClientBackOfficeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    */
 
     private URI getLocation(User user) {
         return ServletUriComponentsBuilder

@@ -30,13 +30,11 @@ public class CallService {
         return callDao.getCallsByDni(dni);
     }
 
-
     public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to)  throws JpaSystemException {
         return callDao.getCallsByUserFilterByDate(dni, LocalDateTime.ofInstant(from.toInstant(),
                 ZoneId.systemDefault()), LocalDateTime.ofInstant(to.toInstant(),
                 ZoneId.systemDefault()));
     }
-
 
     public List<City> getTOP10MostCalledDestination(String dni) throws JpaSystemException {
         return callDao.getTOP10MostCalledDestination(dni);
@@ -45,7 +43,6 @@ public class CallService {
 
     /*Parcial - Laborarotio V -  01-06-2020  */
     public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException {
-
         userService.getClientByDni(dni);
         return callDao.getLast3CallsByDni(dni);
     }

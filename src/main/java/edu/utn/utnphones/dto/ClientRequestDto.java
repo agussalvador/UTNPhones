@@ -22,8 +22,6 @@ public class ClientRequestDto implements Serializable {
 
     private String dni;
 
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private TypeLine typeLine;
 
