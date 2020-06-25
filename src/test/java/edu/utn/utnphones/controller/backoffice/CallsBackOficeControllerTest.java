@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -93,14 +94,6 @@ public class CallsBackOficeControllerTest {
     }
 
 
-
-
-
-
-
-
-
-
     @Test
     public void testGetLast3CallsByDniOk() throws UserNotFoundException, ValidationException {
 
@@ -135,5 +128,30 @@ public class CallsBackOficeControllerTest {
 
         assertEquals(204, response.getStatusCodeValue());
     }
+
+
+    @Test
+    public void testGetLast3CallsByDniNotExist() throws ValidationException, UserNotFoundException {
+
+        String dni = "3216954";
+
+        when(callController.getCallsByDni(dni)).thenThrow(UserNotFoundException.class);
+
+        assertThrows(UserNotFoundException.class, () -> {  callsBackOficeController.getCallsByDni(dni); });
+    }
+
+    @Test
+    public void testGetLast3CallsByDniEmpty() throws ValidationException, UserNotFoundException {
+
+        String dni = "";
+
+        when(callController.getLast3CallsByDni(dni)).thenThrow(ValidationException.class);
+
+        assertThrows(ValidationException.class, () -> {  callsBackOficeController.getLast3CallsByDni(dni); });
+
+    }
+
+
+
 
 }
