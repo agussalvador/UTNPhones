@@ -44,10 +44,10 @@ public class ClientBackOfficeController {
     }
 
     @GetMapping
-    public ResponseEntity<ClientView> getClientByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni) throws ValidationException, UserNotFoundException {
+    public ResponseEntity<User> getClientByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni) throws ValidationException, UserNotFoundException {
 
         try {
-            ClientView client = userController.getClientByDni(dni);
+            User client = userController.getClientByDni(dni);
             return ResponseEntity.ok(client);
         } catch (JpaSystemException e ) {
             throw new UserNotFoundException();
@@ -60,7 +60,7 @@ public class ClientBackOfficeController {
         List<ClientView> clients = new ArrayList<>();
         try{
             clients = userController.getAllClients();
-            return (clients.size() > 0) ? ResponseEntity.ok(clients) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return (clients.size() != 0) ? ResponseEntity.ok(clients) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }catch (JpaSystemException ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

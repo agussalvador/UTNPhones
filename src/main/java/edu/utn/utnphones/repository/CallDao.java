@@ -1,11 +1,10 @@
 package edu.utn.utnphones.repository;
 
 import edu.utn.utnphones.domain.Call;
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.projection.CallView;
-import edu.utn.utnphones.projection.MostCalledDestinationView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.orm.jpa.JpaSystemException;
 
@@ -20,7 +19,7 @@ public interface CallDao extends JpaRepository<Call, Long> {
             " city_origin as cityOrigin, city_destination as cityDestination," +
             " duration, call_date as date " +
             "from v_calls where dni = :dni", nativeQuery = true)
-    List<CallView> getCallsByDni(@Param("dni") String dni) throws JpaSystemException;
+    List<CallView> getCallsByDni(@Param("dni") String dni);
 
 
     @Query(value = "select dni , phone_number_origin as phoneNumberOrigin," +
@@ -32,11 +31,11 @@ public interface CallDao extends JpaRepository<Call, Long> {
 
 
     @Query(value = " call sp_view_TOP10_most_called_destination_by_dni(:dni)", nativeQuery = true)
-    List<MostCalledDestinationView> getTOP10MostCalledDestination(@Param("dni") String dni) throws JpaSystemException;
+    List<City> getTOP10MostCalledDestination(@Param("dni") String dni) throws JpaSystemException;
 
 
 
-    /*Parcial  06-01-2020  */
+    /*Parcial - Laborarotio V -  01-06-2020  */
     /*
     * Profesor  21:16
     *   @Abel Acuña Endpoint que devuelva: las ultimas 3 lineas que llamo una persona X
@@ -51,9 +50,6 @@ public interface CallDao extends JpaRepository<Call, Long> {
             "\t\tgroup by (call_date)\n" +
             "\t\torder by call_date desc\n" +
             "\t\tlimit 3\n", nativeQuery = true)
-    public List<CallView> getLast3CallsByDni(@Param("dni") String dni );
-
-
-
+    List<CallView> getLast3CallsByDni(@Param("dni") String dni );
 
 }

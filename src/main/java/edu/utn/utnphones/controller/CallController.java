@@ -1,9 +1,9 @@
 package edu.utn.utnphones.controller;
 
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
-import edu.utn.utnphones.projection.MostCalledDestinationView;
 import edu.utn.utnphones.service.CallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -27,35 +27,36 @@ public class CallController {
         if(!dni.isEmpty()){
             return callService.getCallsByDni(dni);
         }else{
-            throw new ValidationException("dni have a value");
+            throw new ValidationException("dni must have a value");
         }
     }
 
     public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) throws ValidationException, JpaSystemException {
 
-        if(dni!=null){
+        if(!dni.isEmpty()){
             return callService.getCallsByUserFilterByDate(dni, from, to);
         }else{
-            throw new ValidationException("dni have a value");
+            throw new ValidationException("dni must have a value");
         }
     }
 
-    public List<MostCalledDestinationView> getTOP10MostCalledDestination(String dni) throws ValidationException, JpaSystemException {
+    public List<City> getTOP10MostCalledDestination(String dni) throws ValidationException, JpaSystemException {
 
-        if(dni!=null){
+        if(!dni.isEmpty()){
             return callService.getTOP10MostCalledDestination(dni);
         }else{
-            throw new ValidationException("dni have a value");
+            throw new ValidationException("dni must have a value");
         }
     }
 
 
-    /*Parcial  06-01-2020  */
-    public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException {
-
+    /*Parcial - Laborarotio V -  01-06-2020  */
+    public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException, ValidationException {
+        if(!dni.isEmpty()){
         return callService.getLast3CallsByDni(dni);
+        }else{
+            throw new ValidationException("dni must have a value");
+        }
     }
-
-
 
 }

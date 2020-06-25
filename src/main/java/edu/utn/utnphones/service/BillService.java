@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 public class BillService {
 
     private final BillDao billDao;
-    private final UserService userService;
+    //private final UserService userService;
 
     @Autowired
-    public BillService(BillDao billDao, UserService userService) {
+    public BillService(BillDao billDao) {
         this.billDao = billDao;
-        this.userService = userService;
+        //this.userService = userService;
     }
 
 

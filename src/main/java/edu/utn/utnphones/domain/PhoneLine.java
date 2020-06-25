@@ -2,6 +2,7 @@ package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.utn.utnphones.domain.enums.TypeLine;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -12,8 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
-@Table(name = "telephone_lines")
+@Entity(name = "telephone_lines")
+@Builder
 public class PhoneLine implements Serializable {
 
     @Id
@@ -29,6 +30,7 @@ public class PhoneLine implements Serializable {
     private TypeLine typeLine;
 
     @JsonIgnore
+    @Column(name = "enabled")
     private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)

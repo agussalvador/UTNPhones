@@ -1,6 +1,7 @@
 package edu.utn.utnphones.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -11,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
-@Table(name = "tariffs")
+@Entity(name = "tariffs")
+@Builder
 public class Tariff {
 
     @Id

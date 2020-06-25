@@ -1,8 +1,8 @@
 package edu.utn.utnphones.service;
 
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.projection.CallView;
-import edu.utn.utnphones.projection.MostCalledDestinationView;
 import edu.utn.utnphones.repository.CallDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -38,17 +38,16 @@ public class CallService {
     }
 
 
-    public List<MostCalledDestinationView> getTOP10MostCalledDestination(String dni) throws JpaSystemException {
+    public List<City> getTOP10MostCalledDestination(String dni) throws JpaSystemException {
         return callDao.getTOP10MostCalledDestination(dni);
     }
 
 
-    /*Parcial  06-01-2020  */
+    /*Parcial - Laborarotio V -  01-06-2020  */
     public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException {
 
         userService.getClientByDni(dni);
         return callDao.getLast3CallsByDni(dni);
     }
-
 
 }

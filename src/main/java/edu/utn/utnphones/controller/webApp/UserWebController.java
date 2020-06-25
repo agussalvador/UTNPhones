@@ -2,11 +2,11 @@ package edu.utn.utnphones.controller.webApp;
 
 import edu.utn.utnphones.controller.BillController;
 import edu.utn.utnphones.controller.CallController;
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
-import edu.utn.utnphones.projection.MostCalledDestinationView;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,25 +48,22 @@ public class UserWebController {
 
         User currentUser = getCurrentUser(sessionToken);
         List<CallView> calls = new ArrayList<>();
-        try{
-            if ((from != null) && (to != null)) {
-                Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(from);
-                Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(to);
-                calls = callController.getCallsByUserFilterByDate(currentUser.getDni(), fromDate, toDate);
-            } else {
-                calls = callController.getCallsByDni(currentUser.getDni());
-            }
-            return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        if ((from != null) && (to != null)) {
+            Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(from);
+            Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(to);
+            calls = callController.getCallsByUserFilterByDate(currentUser.getDni(), fromDate, toDate);
+        } else {
+            calls = callController.getCallsByDni(currentUser.getDni());
         }
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 
     //  TOP 10 destinos más llamados por el usuario.
     @GetMapping("/calls/cities")
-    public ResponseEntity<List<MostCalledDestinationView>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException, ValidationException {
+    public ResponseEntity<List<City>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException, ValidationException {
 
-        List<MostCalledDestinationView> callsDestination = new ArrayList<>();
+        List<City> callsDestination = new ArrayList<>();
         try{
             callsDestination = callController.getTOP10MostCalledDestination(getCurrentUser(sessionToken).getDni());
             return (callsDestination.size() > 0) ? ResponseEntity.ok(callsDestination) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -74,7 +71,6 @@ public class UserWebController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     private User getCurrentUser(String sessionToken) throws UserNotFoundException {
         return Optional.ofNullable(sessionManager.getCurrentUser(sessionToken)).orElseThrow(UserNotFoundException::new);

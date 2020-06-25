@@ -24,7 +24,7 @@ public class UserController {
     }
 
     public User login(String dni, String password) throws UserNotFoundException, ValidationException {
-        if ((dni != null) && (password != null)) {
+        if ((dni!=null) && (password!=null)) {
             return userService.login(dni, password);
         } else {
             throw new ValidationException("dni and password must have a value");
@@ -39,11 +39,11 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    public ClientView getClientByDni(String dni) throws JpaSystemException, UserNotFoundException, ValidationException {
+    public User getClientByDni(String dni) throws JpaSystemException, UserNotFoundException, ValidationException {
             if ((dni != null) ) {
             return userService.getClientByDni(dni);
         } else {
-            throw new ValidationException("dni have a value");
+            throw new ValidationException("dni must have a value");
         }
     }
 

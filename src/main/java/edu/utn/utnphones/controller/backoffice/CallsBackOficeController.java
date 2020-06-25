@@ -29,23 +29,17 @@ public class CallsBackOficeController {
 
     @GetMapping
     public ResponseEntity<List<CallView>> getCallsByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
-        try{
-            List<CallView> calls = callController.getCallsByDni(dni);
-            return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
+        List<CallView> calls = callController.getCallsByDni(dni);
+        return (calls.size() != 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    /*Parcial  01-06-2020  */
+    /*Parcial - Laborarotio V -  01-06-2020  */
     @GetMapping("/last-calls")
-    public ResponseEntity<List<CallView>> getLast3CallsByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
-        try{
-            List<CallView> calls = callController.getLast3CallsByDni(dni);
-            return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<List<CallView>> getLast3CallsByDni(@RequestParam(value = "dni") String dni) throws UserNotFoundException, ValidationException {
+
+        List<CallView> calls = callController.getLast3CallsByDni(dni);
+        return (calls.size() != 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 

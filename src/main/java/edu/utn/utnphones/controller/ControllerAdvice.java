@@ -2,10 +2,7 @@ package edu.utn.utnphones.controller;
 
 
 import edu.utn.utnphones.dto.ErrorResponseDto;
-import edu.utn.utnphones.exceptions.InvalidLoginException;
-import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
-import edu.utn.utnphones.exceptions.UserNotFoundException;
-import edu.utn.utnphones.exceptions.ValidationException;
+import edu.utn.utnphones.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,21 +28,29 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public ErrorResponseDto handleUserNotExists() {
+    public ErrorResponseDto handleUserNotFoundException() {
         return new ErrorResponseDto(3, "User not exists");
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PhoneLineNotFoundException.class)
+    public ErrorResponseDto handlePhoneLineNotFoundException(PhoneLineNotFoundException ex) {
+        return new ErrorResponseDto(4, ex.getMessage());
+    }
+
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ParseException.class)
     public ErrorResponseDto handleParseException() {
-        return new ErrorResponseDto(4, "Not valid dates");
+        return new ErrorResponseDto(5, "Not valid dates");
     }
 
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        return new ErrorResponseDto(5, ex.getMessage());
+        return new ErrorResponseDto(6, ex.getMessage());
     }
 
 

@@ -39,19 +39,23 @@ public class UserService {
         return Optional.ofNullable(user).orElseThrow(() -> new UserNotFoundException());
     }
 
-    public User addClient (ClientRequestDto newClient) throws JpaSystemException {
+    public User addClient (ClientRequestDto newClient) throws JpaSystemException, UserAlreadyExistsException {
 
-            Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getPassword(), newClient.getTypeLine().name());
-            User user = userDao.getOne(idUser);
-            return user;
+        Optional<User> user = userDao.findByDni(newClient.getDni());
+        if(user.get() != null) {
+            throw new UserAlreadyExistsException("User Already Exist");
+        }
+        Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getPassword(), newClient.getTypeLine().name());
+        user = userDao.findById(idUser);
+        return user.orElse(null);
     }
 
     public User getUserById(Long id) throws UserNotFoundException {
         return userDao.findById(id).orElse(null);
     }
 
-    public ClientView getClientByDni(String dni) throws JpaSystemException, UserNotFoundException {
-        ClientView client = userDao.getClientByDni(dni);
+    public User getClientByDni(String dni) throws JpaSystemException, UserNotFoundException {
+        User client = userDao.getUserByDni(dni);
         return Optional.ofNullable(client).orElseThrow(() -> new UserNotFoundException());
     }
 
