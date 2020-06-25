@@ -24,7 +24,7 @@ public class PhoneLineController {
     }
 
     // Create PhoneLine By User Id
-    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws JpaSystemException {
+    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws JpaSystemException, ValidationException, UserNotFoundException {
         return phoneLineService.addPhoneLine(newPhoneLine);
     }
 

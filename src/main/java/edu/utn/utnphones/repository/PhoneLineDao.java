@@ -19,7 +19,7 @@ public interface PhoneLineDao extends JpaRepository<PhoneLine,Long> {
 
     @Transactional
     @Procedure(procedureName = "sp_generate_phone_line_by_dni", outputParameterName = "pIdPhone")
-    Long generateNumber(@Param("pUserDni")String dni, @Param("pTypeLine") String typeLine ) throws JpaSystemException;
+    Long generateNumber(@Param("pUserDni")String dni, @Param("pTypeLine") String typeLine);
 
     @Query(value = "select id_telephone_line as idPhoneLine, phone_number as phoneNumber, type_line as typeLine, enabled from v_phone_lines where dni = :dni", nativeQuery = true)
     List<PhoneLineView>getPhoneLinesByDni(@Param("dni") String dni);
@@ -34,7 +34,6 @@ public interface PhoneLineDao extends JpaRepository<PhoneLine,Long> {
     //update
     @Procedure(procedureName = "sp_active_phone_line", outputParameterName = "pIdPhone")
     Long  activePhoneLine(@Param("pIdPhoneLine") Long IdPhoneLine);
-
 
 
 }

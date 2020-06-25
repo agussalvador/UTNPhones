@@ -1,14 +1,13 @@
 package edu.utn.utnphones.service;
 
 
-import edu.utn.utnphones.domain.City;
-import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.ClientRequestDto;
+import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
+import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.ClientView;
-import edu.utn.utnphones.projection.PhoneLineView;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.PhoneLineDao;
 import edu.utn.utnphones.repository.UserDao;
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.jnlp.IntegrationService;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,45 +24,62 @@ public class UserService {
 
     private final CityDao cityDao;
     private final UserDao userDao;
-    private final PhoneLineDao phoneLineDao;
 
     @Autowired
-    public UserService(CityDao cityDao, UserDao userDao, PhoneLineDao phoneLineDao) {
+    public UserService(CityDao cityDao, UserDao userDao) {
         this.cityDao = cityDao;
         this.userDao = userDao;
-        this.phoneLineDao = phoneLineDao;
     }
 
     public User login(String dni, String password) throws UserNotFoundException {
-        User user = userDao.getUserByDni(dni, password);
+        User user = userDao.getUserByDniAndPwd(dni, password);
         return Optional.ofNullable(user).orElseThrow(() -> new UserNotFoundException());
     }
 
-    public User addClient (ClientRequestDto newClient) throws JpaSystemException, UserAlreadyExistsException {
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException {
 
-        Optional<User> user = userDao.findByDni(newClient.getDni());
-        if(user.get() != null) {
+        User user = userDao.findByDni(newClient.getDni()).orElse(null);
+
+        Long idCity = newClient.getCityId();
+        String dni = newClient.getDni();
+        String firstname = newClient.getFirstname();
+        String lastname = newClient.getLastname();
+
+        if(user != null){
+
             throw new UserAlreadyExistsException("User Already Exist");
+
+        }else if( (idCity!=null )&&( !dni.isEmpty() && dni!=null )&&(!firstname.isEmpty()&&firstname!=null ) && ( !lastname.isEmpty()&&lastname!=null ) ){
+
+            cityDao.findById(newClient.getCityId()).orElseThrow(()->new CityNotFoundException());
+            Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getTypeLine().name());
+            user = userDao.findById(idUser).orElse(null);
+            return user;
+
+        }else{
+
+            throw new ValidationException("Error - does not include all necessary information ");
         }
-        Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getPassword(), newClient.getTypeLine().name());
-        user = userDao.findById(idUser);
-        return user.orElse(null);
+
     }
 
-    public User getUserById(Long id) throws UserNotFoundException {
-        return userDao.findById(id).orElse(null);
+
+
+    public User getClientByDni(String dni) throws UserNotFoundException  {
+        return  userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException());
     }
 
-    public User getClientByDni(String dni) throws JpaSystemException, UserNotFoundException {
-        User client = userDao.getUserByDni(dni);
-        return Optional.ofNullable(client).orElseThrow(() -> new UserNotFoundException());
+    public List<User> getAllClients(){
+        return userDao.findAllClients();
     }
 
-    public List<ClientView> getAllClients()throws JpaSystemException{
-        return userDao.getAllClients();
-    }
 
-    public void updateClient(String dni, User newClient)throws JpaSystemException{
+
+
+
+
+    /*
+    public void updateClient(String dni, User newClient){
 
         City city = cityDao.findById(newClient.getCity().getCityId()).orElse(null);
         User existingUser = userDao.getUserByDni(dni);
@@ -78,6 +94,8 @@ public class UserService {
     public void deleteClient(String dni){
         userDao.delete( userDao.getUserByDni(dni));
     }
+
+*/
 
 }
 

@@ -1,7 +1,6 @@
 package edu.utn.utnphones.repository;
 
 import edu.utn.utnphones.domain.User;
-import edu.utn.utnphones.projection.ClientView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -16,22 +15,16 @@ import java.util.Optional;
 public interface UserDao extends JpaRepository<User,Long> {
 
     @Procedure(procedureName = "sp_insert_user_client", outputParameterName = "pIdUser")
-    Long addClient(@Param("pIdCity") Long idCity , @Param("pFirstname") String firstname, @Param("pLastname") String lastname, @Param("pDni") String dni, @Param("pPwd") String password, @Param("pTypeLine") String typeLine ) throws JpaSystemException;
-
-    Optional<User> findByDni(String dni);
+    Long addClient(@Param("pIdCity") Long idCity , @Param("pFirstname") String firstname, @Param("pLastname") String lastname, @Param("pDni") String dni, @Param("pTypeLine") String typeLine );
 
     @Query(value = "SELECT u FROM User u WHERE u.dni = :dni and u.password = :pwd")
-    User getUserByDni(@Param("dni") String dni, @Param("pwd") String password)throws JpaSystemException;
+    User getUserByDniAndPwd(@Param("dni") String dni, @Param("pwd") String password);
 
-    @Query(value = "SELECT u FROM User u WHERE u.dni = :dni and u.enabled = 1")
-    User getUserByDni(@Param("dni") String dni) throws JpaSystemException;
+    @Query(value = "SELECT u FROM User u WHERE u.dni = :dni")
+    Optional<User> findByDni(String dni);
 
-    @Query(value = "SELECT u FROM User where u.enabled=1 and u.user_role=client " , nativeQuery = true)
-    List<ClientView> getAllClients()throws JpaSystemException;
-
-
-
-
+    @Query(value = "SELECT u.* FROM users u WHERE u.user_role = 'client' and u.enabled = true" , nativeQuery = true)
+    List<User> findAllClients();
 
 }
 

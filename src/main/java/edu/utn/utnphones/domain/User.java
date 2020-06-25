@@ -2,7 +2,9 @@ package edu.utn.utnphones.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.utn.utnphones.domain.enums.Role;
+import edu.utn.utnphones.projection.PhoneLineView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,13 +14,14 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
-@Builder
 public class User implements Serializable {
 
     @Id
@@ -33,6 +36,7 @@ public class User implements Serializable {
     private String lastname;
 
     @Column(name = "pwd")
+    @JsonIgnore
     private String password;
 
     @JsonIgnore
@@ -43,12 +47,8 @@ public class User implements Serializable {
     private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
     @JoinColumn(name = "id_city")
     @Fetch(FetchMode.JOIN)
     private City city;
-
-    //@OneToMany(mappedBy = "user")
-    //private List<PhoneLine> phoneLines;
 
 }

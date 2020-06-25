@@ -1,4 +1,4 @@
-package edu.utn.utnphones.controller;
+package edu.utn.utnphones.controller.advice;
 
 
 import edu.utn.utnphones.dto.ErrorResponseDto;
@@ -33,29 +33,27 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(PhoneLineNotFoundException.class)
-    public ErrorResponseDto handlePhoneLineNotFoundException(PhoneLineNotFoundException ex) {
-        return new ErrorResponseDto(4, ex.getMessage());
+    @ExceptionHandler(CityNotFoundException.class)
+    public ErrorResponseDto handleCityNotFoundException() {
+        return new ErrorResponseDto(4, "City not exists");
     }
 
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PhoneLineNotFoundException.class)
+    public ErrorResponseDto handlePhoneLineNotFoundException(PhoneLineNotFoundException ex) {
+        return new ErrorResponseDto(5, ex.getMessage());
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ParseException.class)
     public ErrorResponseDto handleParseException() {
-        return new ErrorResponseDto(5, "Not valid dates");
+        return new ErrorResponseDto(6, "Not valid dates");
     }
-
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        return new ErrorResponseDto(6, ex.getMessage());
+        return new ErrorResponseDto(7, ex.getMessage());
     }
-
-
-
-
-
 
 }

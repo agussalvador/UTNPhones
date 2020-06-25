@@ -10,12 +10,14 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name = "cities")
-@Builder
+@Entity
+@Table(name = "cities")
 public class City implements Serializable {
 
     @Id
@@ -30,7 +32,6 @@ public class City implements Serializable {
     private String areaCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
     @JoinColumn(name = "id_province")
     @Fetch(FetchMode.JOIN)
     private Province province;
