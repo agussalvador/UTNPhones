@@ -1,9 +1,16 @@
 package edu.utn.utnphones.repository;
 
 import edu.utn.utnphones.domain.Tariff;
+import edu.utn.utnphones.dto.TariffRequestDto;
+import edu.utn.utnphones.projection.ClientView;
+import edu.utn.utnphones.projection.TariffView;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
+import org.springframework.orm.jpa.JpaSystemException;
+
+import java.util.List;
 
 public interface TariffDao extends JpaRepository <Tariff, Integer> {
 
@@ -25,5 +32,9 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
     @Procedure(procedureName = "sp_delete_tariff")
     public  void delete(@Param("pId_city_origin") Integer idCityOrigin,
                         @Param("pId_city_destination") Integer idCityDestination);
+
+    /*READ*/
+    @Query(value = "SELECT * FROM v_tariffs " , nativeQuery = true)
+    List<TariffView> getAllTariffs()throws JpaSystemException;
 
 }
