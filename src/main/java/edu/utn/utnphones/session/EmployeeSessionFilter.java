@@ -1,7 +1,7 @@
 package edu.utn.utnphones.session;
 
 
-import edu.utn.utnphones.domain.Role;
+import edu.utn.utnphones.domain.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

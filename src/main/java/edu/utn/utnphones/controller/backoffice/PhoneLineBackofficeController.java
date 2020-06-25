@@ -4,7 +4,9 @@ import edu.utn.utnphones.controller.PhoneLineController;
 import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.PhoneLineRequestDto;
+import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
+import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.PhoneLineView;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,47 +26,45 @@ public class PhoneLineBackofficeController {
 
     private final PhoneLineController phoneLineController;
 
-    private final SessionManager sessionManager;
-
     @Autowired
-    public PhoneLineBackofficeController(PhoneLineController phoneLineController, SessionManager sessionManager) {
+    public PhoneLineBackofficeController(PhoneLineController phoneLineController) {
         this.phoneLineController = phoneLineController;
-        this.sessionManager = sessionManager;
     }
 
     @PostMapping
-    public ResponseEntity newPhoneLine(@RequestHeader("Authorization") String sessionToken, @RequestBody PhoneLineRequestDto newPhoneLine) {
+    public ResponseEntity newPhoneLine(@RequestBody PhoneLineRequestDto newPhoneLine) {
 
-        try{
-            PhoneLine phoneLine = phoneLineController.addPhoneLine(newPhoneLine);
-            return ResponseEntity.created(getLocation(phoneLine)).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        PhoneLine phoneLine = phoneLineController.addPhoneLine(newPhoneLine);
+        return ResponseEntity.created(getLocation(phoneLine)).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni") String dni){
+    @GetMapping("/client")
+    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
 
-        try{
-            List<PhoneLineView> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
-            return (phoneLines.size() > 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<PhoneLineView> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
+        return (phoneLines.size() != 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<PhoneLineView>> getPhoneLines(){
 
+        List<PhoneLineView> phoneLines = phoneLineController.getPhoneLines();
+        return (phoneLines.size() > 0) ? ResponseEntity.ok(phoneLines): ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
-        /*
-        - Update PhoneLines (By Id/Number) 	-> PUT:     localhost:8080/api/backoffice/phone-lines?number='0223-5567778'
-        - Delete PhoneLines (By Id/Number) 	-> DELETE:  localhost:8080/api/backoffice/phone-lines?number='0223-5567778'
-        */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PhoneLine>suspendPhone(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
 
+        PhoneLine phoneLine = phoneLineController.deletePhoneLine(idPhoneLine);
+        return ResponseEntity.ok().build();
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PhoneLine>updatePhoneLine(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
 
-
-
+        PhoneLine phoneLine = phoneLineController.updatePhoneLine(idPhoneLine);
+        return ResponseEntity.accepted().build();
+    }
 
     private URI getLocation(PhoneLine phoneLine) {
         return ServletUriComponentsBuilder
@@ -73,7 +73,5 @@ public class PhoneLineBackofficeController {
                 .buildAndExpand(phoneLine.getPhoneLineId())
                 .toUri();
     }
-
-
 
 }

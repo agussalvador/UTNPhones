@@ -1,4 +1,4 @@
-package edu.utn.utnphones.domain;
+package edu.utn.utnphones.domain.enums;
 
 public enum TypeLine {
     home,

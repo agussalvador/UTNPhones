@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PhoneLineDao extends JpaRepository<PhoneLine,Long> {
@@ -18,10 +19,22 @@ public interface PhoneLineDao extends JpaRepository<PhoneLine,Long> {
 
     @Transactional
     @Procedure(procedureName = "sp_generate_phone_line_by_dni", outputParameterName = "pIdPhone")
-    public Long generateNumber(@Param("pUserDni")String dni, @Param("pTypeLine") String typeLine ) throws JpaSystemException;
+    Long generateNumber(@Param("pUserDni")String dni, @Param("pTypeLine") String typeLine ) throws JpaSystemException;
 
-    @Query(value = "select full_number as phoneNumber, type_line as typeLine from v_phone_lines where dni = :dni " , nativeQuery = true)
-    public List<PhoneLineView> getPhoneLinesByDni(@Param("dni") String dni ) throws JpaSystemException;
+    @Query(value = "select id_telephone_line as idPhoneLine, phone_number as phoneNumber, type_line as typeLine, enabled from v_phone_lines where dni = :dni", nativeQuery = true)
+    List<PhoneLineView>getPhoneLinesByDni(@Param("dni") String dni);
+
+    @Query(value = "select id_telephone_line as idPhoneLine, phone_number as phoneNumber, type_line as typeLine, enabled from v_phone_lines", nativeQuery = true)
+    List<PhoneLineView> getPhoneLines();
+
+    //delete
+    @Procedure(procedureName = "sp_suspend_phone_line", outputParameterName = "pIdPhone")
+    Long  suspendPhoneLine(@Param("pIdPhoneLine") Long IdPhoneLine);
+
+    //update
+    @Procedure(procedureName = "sp_active_phone_line", outputParameterName = "pIdPhone")
+    Long  activePhoneLine(@Param("pIdPhoneLine") Long IdPhoneLine);
+
 
 
 }
