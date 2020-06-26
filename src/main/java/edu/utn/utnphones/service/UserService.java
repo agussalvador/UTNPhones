@@ -57,7 +57,6 @@ public class UserService {
             return user;
 
         }else{
-
             throw new ValidationException("Error - does not include all necessary information ");
         }
 

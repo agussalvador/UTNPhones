@@ -13,6 +13,6 @@ public class TariffRequestDto {
 
     private Double costPrice;
     private Double price;
-    City cityOrigin;
-    City cityDestination;
+    private Long cityOriginId;
+    private Long cityDestinationId;
 }

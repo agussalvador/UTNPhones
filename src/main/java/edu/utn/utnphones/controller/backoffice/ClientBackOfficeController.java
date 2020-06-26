@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/backoffice/client")
+@RequestMapping("/api/backoffice/clients")
 public class ClientBackOfficeController {
 
     private final UserController userController;
