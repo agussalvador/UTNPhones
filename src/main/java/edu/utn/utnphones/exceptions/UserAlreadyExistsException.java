@@ -2,6 +2,9 @@ package edu.utn.utnphones.exceptions;
 
 public class UserAlreadyExistsException extends RecordExistsException {
 
+    public UserAlreadyExistsException() {
+    }
+
     public UserAlreadyExistsException(String message) {
         super(message);
     }

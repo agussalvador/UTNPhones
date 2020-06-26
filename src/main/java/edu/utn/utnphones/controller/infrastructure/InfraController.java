@@ -3,6 +3,8 @@ package edu.utn.utnphones.controller.infrastructure;
 import edu.utn.utnphones.controller.CallController;
 import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.dto.CallRequestDto;
+import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
+import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/infra/")
+@RequestMapping("/api/infra")
 public class InfraController {
 
     private final CallController callController;
@@ -28,31 +30,11 @@ public class InfraController {
     }
 
     @PostMapping
-    public ResponseEntity addCall(@RequestBody CallRequestDto callDto){
+    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws CallAlreadyExistsException, ValidationException {
 
-        // Call call = callController.add();
-
-        Call call = null;
-
+        Call call = callController.addCall(callDto);
         return ResponseEntity.created(getLocation(call)).build();
-
-
     }
-
-
-    /*
-    * 	- Ingresar una llamada
-		POST: /api/infra
-		{
-			"numberOrigin":"0223-5677456",
-			"numberDestination":"2267-1231233",
-			"duration":45,
-			"date":"01/06/2020"
-		}
-    * */
-
-
-
 
     private URI getLocation(Call call) {
         return ServletUriComponentsBuilder

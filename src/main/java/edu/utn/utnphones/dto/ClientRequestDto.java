@@ -4,6 +4,7 @@ import edu.utn.utnphones.domain.enums.TypeLine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.platform.commons.util.StringUtils;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,5 +25,9 @@ public class ClientRequestDto implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private TypeLine typeLine;
+
+    public Boolean isValid() {
+        return cityId != null && !StringUtils.isBlank(dni) && !StringUtils.isBlank(firstname) && !StringUtils.isBlank(lastname);
+    }
 
 }

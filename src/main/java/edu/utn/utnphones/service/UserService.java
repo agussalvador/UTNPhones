@@ -7,15 +7,11 @@ import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.ClientView;
 import edu.utn.utnphones.repository.CityDao;
-import edu.utn.utnphones.repository.PhoneLineDao;
 import edu.utn.utnphones.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
-import javax.jnlp.IntegrationService;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,30 +32,21 @@ public class UserService {
         return Optional.ofNullable(user).orElseThrow(() -> new UserNotFoundException());
     }
 
+    private User saveClient (ClientRequestDto newClient) {
+        Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getTypeLine().name());
+        return userDao.findById(idUser).orElse(null);
+    }
+
     public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException {
 
-        User user = userDao.findByDni(newClient.getDni()).orElse(null);
+        if(!newClient.isValid()) throw new ValidationException("Error - does not include all necessary information ");
 
-        Long idCity = newClient.getCityId();
-        String dni = newClient.getDni();
-        String firstname = newClient.getFirstname();
-        String lastname = newClient.getLastname();
+        Optional<User> user = userDao.findByDni(newClient.getDni());
+        if(user.isPresent()) throw new UserAlreadyExistsException();
 
-        if(user != null){
+        cityDao.findById(newClient.getCityId()).orElseThrow(()->new CityNotFoundException());
 
-            throw new UserAlreadyExistsException("User Already Exist");
-
-        }else if( (idCity!=null )&&( !dni.isEmpty() && dni!=null )&&(!firstname.isEmpty()&&firstname!=null ) && ( !lastname.isEmpty()&&lastname!=null ) ){
-
-            cityDao.findById(newClient.getCityId()).orElseThrow(()->new CityNotFoundException());
-            Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getTypeLine().name());
-            user = userDao.findById(idUser).orElse(null);
-            return user;
-
-        }else{
-            throw new ValidationException("Error - does not include all necessary information ");
-        }
-
+        return saveClient(newClient);
     }
 
 

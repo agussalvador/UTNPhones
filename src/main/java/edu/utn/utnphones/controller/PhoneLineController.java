@@ -37,7 +37,7 @@ public class PhoneLineController {
         }
     }
 
-    public List<PhoneLineView> getPhoneLines() {
+    public List<PhoneLine> getPhoneLines() {
         return phoneLineService.getPhoneLines();
     }
 

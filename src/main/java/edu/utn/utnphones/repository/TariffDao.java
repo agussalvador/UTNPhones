@@ -1,9 +1,6 @@
 package edu.utn.utnphones.repository;
 
 import edu.utn.utnphones.domain.Tariff;
-import edu.utn.utnphones.dto.TariffRequestDto;
-import edu.utn.utnphones.projection.ClientView;
-import edu.utn.utnphones.projection.TariffView;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

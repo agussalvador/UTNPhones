@@ -1,6 +1,9 @@
 package edu.utn.utnphones.controller;
 
+import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.domain.City;
+import edu.utn.utnphones.dto.CallRequestDto;
+import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
@@ -21,6 +24,13 @@ public class CallController {
     public CallController(CallService callService) {
         this.callService = callService;
     }
+
+
+    public Call addCall(CallRequestDto call) throws CallAlreadyExistsException, ValidationException {
+
+        return callService.addCall(call);
+    }
+
 
     public List<CallView> getCallsByDni(String dni) throws ValidationException, JpaSystemException, UserNotFoundException {
 

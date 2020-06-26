@@ -29,13 +29,12 @@ public class PhoneLine implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeLine typeLine;
 
-    @JsonIgnore
     @Column(name = "enabled")
     private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
-    @JsonBackReference
+    @Fetch(FetchMode.JOIN)
     private User user;
 
 }

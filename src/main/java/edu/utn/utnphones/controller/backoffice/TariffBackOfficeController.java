@@ -2,17 +2,12 @@ package edu.utn.utnphones.controller.backoffice;
 
 
 import edu.utn.utnphones.controller.TariffController;
-import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.domain.Tariff;
-import edu.utn.utnphones.domain.User;
 
 import edu.utn.utnphones.dto.TariffRequestDto;
 import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
-import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.ClientView;
-import edu.utn.utnphones.projection.TariffView;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -38,17 +38,17 @@ public class PhoneLineBackofficeController {
         return ResponseEntity.created(getLocation(phoneLine)).build();
     }
 
-    @GetMapping("/client")
-    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
+    @GetMapping("")
+    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestParam(value = "dni_client") String dni) throws ValidationException, UserNotFoundException {
 
         List<PhoneLineView> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
         return (phoneLines.size() != 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<PhoneLineView>> getPhoneLines(){
+    @GetMapping("/")
+    public ResponseEntity<List<PhoneLine>> getPhoneLines(){
 
-        List<PhoneLineView> phoneLines = phoneLineController.getPhoneLines();
+        List<PhoneLine> phoneLines = phoneLineController.getPhoneLines();
         return (phoneLines.size() > 0) ? ResponseEntity.ok(phoneLines): ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

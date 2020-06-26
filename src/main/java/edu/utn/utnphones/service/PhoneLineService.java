@@ -8,11 +8,9 @@ import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.PhoneLineView;
 import edu.utn.utnphones.repository.PhoneLineDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PhoneLineService {
@@ -45,7 +43,7 @@ public class PhoneLineService {
     }
 
     // get All PhoneLines
-    public List<PhoneLineView> getPhoneLines()  {
+    public List<PhoneLine> getPhoneLines()  {
         return phoneLineDao.getPhoneLines();
     }
 

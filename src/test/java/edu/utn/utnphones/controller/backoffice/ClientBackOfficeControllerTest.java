@@ -2,29 +2,20 @@ package edu.utn.utnphones.controller.backoffice;
 
 import edu.utn.utnphones.controller.UserController;
 import edu.utn.utnphones.domain.User;
-import edu.utn.utnphones.dto.ClientRequestDto;
-import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.ClientView;
-import edu.utn.utnphones.session.SessionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 
-import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class ClientBackOfficeControllerTest {

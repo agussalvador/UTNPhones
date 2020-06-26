@@ -37,11 +37,13 @@ public class Call {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city_origin")
     @Fetch(FetchMode.JOIN)
+    @JsonBackReference
     private City cityOrigin;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city_destination")
     @Fetch(FetchMode.JOIN)
+    @JsonBackReference
     private City cityDestination;
 
     @Column(name = "duration")

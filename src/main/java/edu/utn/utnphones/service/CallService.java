@@ -1,9 +1,14 @@
 package edu.utn.utnphones.service;
 
+import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.domain.City;
+import edu.utn.utnphones.dto.CallRequestDto;
+import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
+import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.repository.CallDao;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -25,18 +30,24 @@ public class CallService {
         this.userService = userService;
     }
 
+    public Call addCall(CallRequestDto call) throws ValidationException, CallAlreadyExistsException {
+        if(!call.isValid()) throw new ValidationException("Error - does not include all necessary information ");
+        Long idCall = callDao.saveCall(call.getNumberOrigin(), call.getNumberDestination(), call.getDuration(), call.getDate() );
+        return callDao.findById(idCall).orElseThrow( () -> new CallAlreadyExistsException());
+    }
+
     public List<CallView> getCallsByDni(String dni) throws JpaSystemException, UserNotFoundException {
         userService.getClientByDni(dni);
         return callDao.getCallsByDni(dni);
     }
 
-    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to)  throws JpaSystemException {
+    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) {
         return callDao.getCallsByUserFilterByDate(dni, LocalDateTime.ofInstant(from.toInstant(),
                 ZoneId.systemDefault()), LocalDateTime.ofInstant(to.toInstant(),
                 ZoneId.systemDefault()));
     }
 
-    public List<City> getTOP10MostCalledDestination(String dni) throws JpaSystemException {
+    public List<City> getTOP10MostCalledDestination(String dni) {
         return callDao.getTOP10MostCalledDestination(dni);
     }
 

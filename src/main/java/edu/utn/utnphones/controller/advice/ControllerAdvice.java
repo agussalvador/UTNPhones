@@ -62,5 +62,11 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         return new ErrorResponseDto(8, ex.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(CallAlreadyExistsException.class)
+    public ErrorResponseDto handleCallAlreadyExistsException(CallAlreadyExistsException ex) {
+        return new ErrorResponseDto(8, ex.getMessage());
+    }
+
 
 }
