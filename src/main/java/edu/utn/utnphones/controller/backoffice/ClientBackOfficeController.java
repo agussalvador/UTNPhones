@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ClientBackOfficeController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addNewClient(@RequestBody ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException {
+    public ResponseEntity<User> addNewClient(@RequestBody ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
 
         User user = userController.addClient(newClient);
         return ResponseEntity.created(getLocation(user)).build();
@@ -52,7 +53,7 @@ public class ClientBackOfficeController {
 
     /*
     @PutMapping
-    public ResponseEntity<User> updateUserByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni , @RequestBody User newClient){
+    public ResponseEntity<User> updateUserByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni , @RequestBody ClientRequestDto newClient){
 
         try{
             userController.updateClient(dni, newClient);

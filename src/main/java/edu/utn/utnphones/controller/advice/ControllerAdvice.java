@@ -17,7 +17,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidLoginException.class)
     public ErrorResponseDto handleLoginException(InvalidLoginException exc) {
-        return new ErrorResponseDto(1, "Invalid login");
+        return new ErrorResponseDto(1, exc.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

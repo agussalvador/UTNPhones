@@ -10,6 +10,7 @@ public interface CallView {
     String getPhoneNumberDestination();
     String getCityOrigin();
     String getCityDestination();
+    String getTotalPrice();
     Integer getDuration();
     LocalDateTime getDate();
 

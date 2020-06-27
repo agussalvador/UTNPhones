@@ -49,8 +49,4 @@ public class Bill {
     @Fetch(FetchMode.JOIN)
     private PhoneLine phoneLine;
 
-    @OneToMany(mappedBy = "bill")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    List<Call> calls = new ArrayList<Call>();
-
 }

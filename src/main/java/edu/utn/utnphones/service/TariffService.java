@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class TariffService {
 
-    private static TariffDao dao;
+    private static TariffDao tariffDao;
     private final CityDao cityDao;
 
     @Autowired
-    public TariffService(TariffDao dao, CityDao cityDao) {
-        this.dao = dao;
+    public TariffService(TariffDao tariffDao, CityDao cityDao) {
+        this.tariffDao = tariffDao;
         this.cityDao = cityDao;
     }
 
@@ -36,8 +36,8 @@ public class TariffService {
             City cityOrigin = cityDao.findById(tariff.getCityOriginId()).orElseThrow(() -> new CityNotFoundException());
             City cityDestination = cityDao.findById(tariff.getCityDestinationId()).orElseThrow(() -> new CityNotFoundException());
             try{
-                Long idTariff = dao.create(cityOrigin.getCityId(), cityDestination.getCityId(), tariff.getCostPrice(), tariff.getPrice());
-                return dao.getById(idTariff);
+                Long idTariff = tariffDao.create(cityOrigin.getCityId(), cityDestination.getCityId(), tariff.getCostPrice(), tariff.getPrice());
+                return tariffDao.getById(idTariff);
             }catch (DataAccessException ex){
                 throw new TarriffAlreadyExistsException();
             }
@@ -48,7 +48,7 @@ public class TariffService {
 
     /*READ*/
     public List<Tariff> readTariff()throws JpaSystemException{
-        return dao.getAllTariffs();
+        return tariffDao.getAllTariffs();
     }
 
 //    /*UPDATE*/

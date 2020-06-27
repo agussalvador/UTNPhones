@@ -49,14 +49,23 @@ public class Call {
     @Column(name = "duration")
     private Integer duration; // en segundos
 
+    @Column(name = "cost_price")
+    private Integer totalPrice;
+
+    @Column(name = "call_price")
+    private Integer totalCost;
+
     @Column(name = "call_date")
     private LocalDateTime callDate;
 
+    @Column(name = "billed")
+    private Boolean billed;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "id_bill")
     @Fetch(FetchMode.JOIN)
+    @JsonBackReference
     private Bill bill;
 
 }

@@ -2,23 +2,18 @@ package edu.utn.utnphones.controller.backoffice;
 
 import edu.utn.utnphones.controller.PhoneLineController;
 import edu.utn.utnphones.domain.PhoneLine;
-import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.PhoneLineRequestDto;
 import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.PhoneLineView;
-import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/backoffice/phone-lines")
@@ -39,9 +34,9 @@ public class PhoneLineBackofficeController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PhoneLineView>> getPhoneLinesByDni(@RequestParam(value = "dni_client") String dni) throws ValidationException, UserNotFoundException {
+    public ResponseEntity<List<PhoneLine>> getPhoneLinesByDni(@RequestParam(value = "dni_client") String dni) throws ValidationException, UserNotFoundException {
 
-        List<PhoneLineView> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
+        List<PhoneLine> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
         return (phoneLines.size() != 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

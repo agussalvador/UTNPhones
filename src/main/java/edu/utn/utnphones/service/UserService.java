@@ -1,55 +1,47 @@
 package edu.utn.utnphones.service;
 
 
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.ClientRequestDto;
-import edu.utn.utnphones.exceptions.CityNotFoundException;
-import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
-import edu.utn.utnphones.exceptions.UserNotFoundException;
-import edu.utn.utnphones.exceptions.ValidationException;
+import edu.utn.utnphones.exceptions.*;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private final CityDao cityDao;
     private final UserDao userDao;
+    private final CityDao cityDao;
 
-    @Autowired
-    public UserService(CityDao cityDao, UserDao userDao) {
-        this.cityDao = cityDao;
+    public UserService(UserDao userDao, CityDao cityDao) {
         this.userDao = userDao;
+        this.cityDao = cityDao;
     }
 
-    public User login(String dni, String password) throws UserNotFoundException {
-        User user = userDao.getUserByDniAndPwd(dni, password);
-        return Optional.ofNullable(user).orElseThrow(() -> new UserNotFoundException());
-    }
 
-    private User saveClient (ClientRequestDto newClient) {
-        Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), newClient.getTypeLine().name());
+    private User saveClient (ClientRequestDto newClient) throws NoSuchAlgorithmException {
+        Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), this.hashPwd(newClient.getPassword()), newClient.getTypeLine().name());
         return userDao.findById(idUser).orElse(null);
     }
 
-    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException {
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
 
         if(!newClient.isValid()) throw new ValidationException("Error - does not include all necessary information ");
-
         Optional<User> user = userDao.findByDni(newClient.getDni());
         if(user.isPresent()) throw new UserAlreadyExistsException();
-
         cityDao.findById(newClient.getCityId()).orElseThrow(()->new CityNotFoundException());
 
         return saveClient(newClient);
     }
-
-
 
     public User getClientByDni(String dni) throws UserNotFoundException  {
         return  userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException());
@@ -59,24 +51,41 @@ public class UserService {
         return userDao.findAllClients();
     }
 
+    public User login(String dni, String password) throws UserNotFoundException, InvalidLoginException, NoSuchAlgorithmException {
+
+        User user = userDao.getUserByDniAndPwd(dni,  this.hashPwd(password)).orElse(null);
+        if( user != null) {
+            return Optional.ofNullable(user).orElseThrow(() -> new UserNotFoundException());
+        }else{
+            throw new InvalidLoginException("dni and/or password is incorrect.");
+        }
+    }
 
 
+    private String hashPwd(String pass) throws NoSuchAlgorithmException {
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        byte[] data = pass.getBytes();
+        m.update(data, 0, data.length);
+        BigInteger i = new BigInteger(1, m.digest());
+        return String.format("%1$032X", i);
+    }
 
 
+    public void updateClient(String dni, ClientRequestDto newClient) throws CityNotFoundException, UserNotFoundException {
 
-    /*
-    public void updateClient(String dni, User newClient){
+        City city = cityDao.findById(newClient.getCityId()).orElseThrow(()-> new CityNotFoundException());
 
-        City city = cityDao.findById(newClient.getCity().getCityId()).orElse(null);
-        User existingUser = userDao.getUserByDni(dni);
+        User existingUser = userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException());
 
-        existingUser.setFirstname((newClient.getFirstname() != null) ? newClient.getFirstname() : existingUser.getFirstname() );
+        existingUser.setCity( city );
+        existingUser.setFirstname( (newClient.getFirstname() != null) ? newClient.getFirstname() : existingUser.getFirstname() );
         existingUser.setLastname( (newClient.getLastname() != null) ? newClient.getLastname() : existingUser.getLastname() );
-        existingUser.setPassword( (newClient.getPassword() != null) ? newClient.getPassword() : existingUser.getPassword() );
+        existingUser.setDni( (newClient.getDni() != null) ? newClient.getDni() : existingUser.getDni() );
 
         userDao.save(existingUser);
     }
 
+/*
     public void deleteClient(String dni){
         userDao.delete( userDao.getUserByDni(dni));
     }

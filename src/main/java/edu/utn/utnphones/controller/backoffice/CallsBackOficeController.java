@@ -23,7 +23,7 @@ public class CallsBackOficeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CallView>> getCallsByDni(@RequestParam(value = "dni") String dni) throws ValidationException, UserNotFoundException {
+    public ResponseEntity<List<CallView>> getCallsByDni(@RequestParam(value = "dni_client") String dni) throws ValidationException, UserNotFoundException {
 
         List<CallView> calls = callController.getCallsByDni(dni);
         return (calls.size() != 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -36,6 +36,5 @@ public class CallsBackOficeController {
         List<CallView> calls = callController.getLast3CallsByDni(dni);
         return (calls.size() != 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
 }

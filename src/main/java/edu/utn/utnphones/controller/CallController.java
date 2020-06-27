@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CallController {
     }
 
 
-    public Call addCall(CallRequestDto call) throws CallAlreadyExistsException, ValidationException {
+    public Call addCall(CallRequestDto call) throws CallAlreadyExistsException, ValidationException, ParseException {
 
         return callService.addCall(call);
     }
@@ -50,13 +51,9 @@ public class CallController {
         }
     }
 
-    public List<City> getTOP10MostCalledDestination(String dni) throws ValidationException, JpaSystemException {
+    public List<City> getTOP10MostCalledDestination(Long id) {
 
-        if(!dni.isEmpty()){
-            return callService.getTOP10MostCalledDestination(dni);
-        }else{
-            throw new ValidationException("dni must have a value");
-        }
+        return callService.getTOP10MostCalledDestination(id);
     }
 
 

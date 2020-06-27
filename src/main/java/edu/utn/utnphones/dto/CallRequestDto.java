@@ -15,7 +15,7 @@ public class CallRequestDto {
     private String numberOrigin;
     private String numberDestination;
     private Integer duration;
-    private LocalDateTime date;
+    private String date;
 
     public Boolean isValid(){
         return  !StringUtils.isBlank(numberOrigin) && !StringUtils.isBlank(numberDestination) && duration != null && date != null ;

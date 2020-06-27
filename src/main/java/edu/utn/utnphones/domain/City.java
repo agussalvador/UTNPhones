@@ -18,6 +18,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "cities")
+@Builder
 public class City implements Serializable {
 
     @Id
@@ -32,7 +33,7 @@ public class City implements Serializable {
     private String areaCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_province")
+    @JoinColumn(name = "id_province", referencedColumnName="id_province", foreignKey = @ForeignKey(name = "fk_id_province"))
     @Fetch(FetchMode.JOIN)
     private Province province;
 

@@ -8,11 +8,13 @@ import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.repository.CallDao;
-import org.junit.platform.commons.util.StringUtils;
+import edu.utn.utnphones.repository.CityDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -22,17 +24,20 @@ import java.util.List;
 public class CallService {
 
     private final CallDao callDao;
+    private final CityDao cityDao;
     private final UserService userService;
 
     @Autowired
-    public CallService(CallDao callDao, UserService userService) {
+    public CallService(CallDao callDao, CityDao cityDao, UserService userService) {
         this.callDao = callDao;
+        this.cityDao = cityDao;
         this.userService = userService;
     }
 
-    public Call addCall(CallRequestDto call) throws ValidationException, CallAlreadyExistsException {
+    public Call addCall(CallRequestDto call) throws ValidationException, CallAlreadyExistsException, ParseException {
         if(!call.isValid()) throw new ValidationException("Error - does not include all necessary information ");
-        Long idCall = callDao.saveCall(call.getNumberOrigin(), call.getNumberDestination(), call.getDuration(), call.getDate() );
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(call.getDate());
+        Long idCall = callDao.saveCall(call.getNumberOrigin(), call.getNumberDestination(), call.getDuration(), date );
         return callDao.findById(idCall).orElseThrow( () -> new CallAlreadyExistsException());
     }
 
@@ -47,8 +52,8 @@ public class CallService {
                 ZoneId.systemDefault()));
     }
 
-    public List<City> getTOP10MostCalledDestination(String dni) {
-        return callDao.getTOP10MostCalledDestination(dni);
+    public List<City> getTOP10MostCalledDestination(Long id) {
+        return cityDao.getTOP10MostCalledDestination(id);
     }
 
 

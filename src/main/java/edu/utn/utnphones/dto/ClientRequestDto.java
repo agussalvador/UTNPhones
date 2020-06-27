@@ -19,6 +19,8 @@ public class ClientRequestDto implements Serializable {
 
     private String firstname;
 
+    private String password;
+
     private String lastname;
 
     private String dni;
@@ -27,7 +29,7 @@ public class ClientRequestDto implements Serializable {
     private TypeLine typeLine;
 
     public Boolean isValid() {
-        return cityId != null && !StringUtils.isBlank(dni) && !StringUtils.isBlank(firstname) && !StringUtils.isBlank(lastname);
+        return cityId != null && !StringUtils.isBlank(dni) && !StringUtils.isBlank(password)  && !StringUtils.isBlank(firstname) && !StringUtils.isBlank(lastname);
     }
 
 }

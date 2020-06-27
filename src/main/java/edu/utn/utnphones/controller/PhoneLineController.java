@@ -5,7 +5,6 @@ import edu.utn.utnphones.dto.PhoneLineRequestDto;
 import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.PhoneLineView;
 import edu.utn.utnphones.service.PhoneLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -29,7 +28,7 @@ public class PhoneLineController {
     }
 
     // Get PhoneLines by User Dni
-    public List<PhoneLineView> getPhoneLinesByUserDni(String dni) throws ValidationException, UserNotFoundException {
+    public List<PhoneLine> getPhoneLinesByUserDni(String dni) throws ValidationException, UserNotFoundException {
         if (!dni.isEmpty()){
             return phoneLineService.getPhoneLinesByUserDni(dni);
         }else {

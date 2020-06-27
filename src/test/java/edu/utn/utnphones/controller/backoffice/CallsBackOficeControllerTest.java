@@ -100,7 +100,6 @@ public class CallsBackOficeControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(callViewList, response.getBody());
-
     }
 
     @Test

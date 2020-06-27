@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/infra")
@@ -30,7 +33,7 @@ public class InfraController {
     }
 
     @PostMapping
-    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws CallAlreadyExistsException, ValidationException {
+    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws CallAlreadyExistsException, ValidationException, ParseException {
 
         Call call = callController.addCall(callDto);
         return ResponseEntity.created(getLocation(call)).build();

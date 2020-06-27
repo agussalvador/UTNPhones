@@ -5,7 +5,6 @@ import edu.utn.utnphones.dto.PhoneLineRequestDto;
 import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.PhoneLineView;
 import edu.utn.utnphones.repository.PhoneLineDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class PhoneLineService {
     }
 
     // get PhoneLines by User Dni
-    public List<PhoneLineView> getPhoneLinesByUserDni(String dni) throws UserNotFoundException {
+    public List<PhoneLine> getPhoneLinesByUserDni(String dni) throws UserNotFoundException {
         userService.getClientByDni(dni);
         return phoneLineDao.getPhoneLinesByDni(dni);
     }

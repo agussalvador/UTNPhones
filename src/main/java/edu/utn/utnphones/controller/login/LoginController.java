@@ -13,6 +13,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequestMapping("/api")
 public class LoginController {
@@ -34,7 +36,7 @@ public class LoginController {
             User user = userController.login(loginRequestDto.getDni(), loginRequestDto.getPassword());
             token = sessionManager.createSession(user);
             response = ResponseEntity.ok().headers(createHeaders(token)).build();
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | NoSuchAlgorithmException e) {
             throw new InvalidLoginException(e);
         }
         return response;
