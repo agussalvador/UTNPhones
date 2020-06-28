@@ -26,14 +26,11 @@ public class CallController {
         this.callService = callService;
     }
 
-
-    public Call addCall(CallRequestDto call) throws CallAlreadyExistsException, ValidationException, ParseException {
-
+    public Call addCall(CallRequestDto call) throws ValidationException, ParseException {
         return callService.addCall(call);
     }
 
-
-    public List<CallView> getCallsByDni(String dni) throws ValidationException, JpaSystemException, UserNotFoundException {
+    public List<CallView> getCallsByDni(String dni) throws ValidationException, UserNotFoundException {
 
         if(!dni.isEmpty()){
             return callService.getCallsByDni(dni);
@@ -42,7 +39,7 @@ public class CallController {
         }
     }
 
-    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) throws ValidationException, JpaSystemException {
+    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) throws ValidationException, UserNotFoundException {
 
         if(!dni.isEmpty()){
             return callService.getCallsByUserFilterByDate(dni, from, to);

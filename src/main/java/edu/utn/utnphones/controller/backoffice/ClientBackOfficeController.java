@@ -51,29 +51,21 @@ public class ClientBackOfficeController {
         return (clients.size() != 0) ? ResponseEntity.ok(clients) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    /*
     @PutMapping
-    public ResponseEntity<User> updateUserByDni(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni , @RequestBody ClientRequestDto newClient){
+    public ResponseEntity<User> updateUserByDni(@RequestParam(value = "dni", required = false) String dni , @RequestBody ClientRequestDto newClient) throws UserNotFoundException, CityNotFoundException, ValidationException {
 
-        try{
-            userController.updateClient(dni, newClient);
-            return ResponseEntity.accepted().build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        userController.updateClient(dni, newClient);
+        return ResponseEntity.accepted().build();
     }
+
 
     @DeleteMapping
-    public ResponseEntity deleteClient(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "dni", required = false) String dni){
+    public ResponseEntity deleteClient(@RequestParam(value = "dni", required = false) String dni) throws ValidationException, UserNotFoundException {
 
-        try{
-            userController.deleteClient(dni);
-            return ResponseEntity.ok().build();
-        }catch (JpaSystemException ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        userController.deleteClient(dni);
+        return ResponseEntity.ok().build();
     }
-    */
+
 
     private URI getLocation(User user) {
         return ServletUriComponentsBuilder

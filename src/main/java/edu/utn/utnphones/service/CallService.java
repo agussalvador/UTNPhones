@@ -34,19 +34,20 @@ public class CallService {
         this.userService = userService;
     }
 
-    public Call addCall(CallRequestDto call) throws ValidationException, CallAlreadyExistsException, ParseException {
+    public Call addCall(CallRequestDto call) throws ValidationException, ParseException {
         if(!call.isValid()) throw new ValidationException("Error - does not include all necessary information ");
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(call.getDate());
         Long idCall = callDao.saveCall(call.getNumberOrigin(), call.getNumberDestination(), call.getDuration(), date );
-        return callDao.findById(idCall).orElseThrow( () -> new CallAlreadyExistsException());
+        return callDao.getOne(idCall);
     }
 
-    public List<CallView> getCallsByDni(String dni) throws JpaSystemException, UserNotFoundException {
+    public List<CallView> getCallsByDni(String dni) throws UserNotFoundException {
         userService.getClientByDni(dni);
         return callDao.getCallsByDni(dni);
     }
 
-    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) {
+    public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) throws UserNotFoundException {
+        userService.getClientByDni(dni);
         return callDao.getCallsByUserFilterByDate(dni, LocalDateTime.ofInstant(from.toInstant(),
                 ZoneId.systemDefault()), LocalDateTime.ofInstant(to.toInstant(),
                 ZoneId.systemDefault()));

@@ -35,7 +35,6 @@ public class CallsBackOficeControllerTest {
         callsBackOficeController = new CallsBackOficeController(callController);
         ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
         callView = factory.createProjection(CallView.class);
-
     }
 
     @Test

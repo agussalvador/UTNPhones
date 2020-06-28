@@ -22,7 +22,6 @@ public class TariffController {
         this.tariffService = tariffService;
     }
 
-    /*CRUD tariff*/
     public Tariff createTariff (TariffRequestDto newTariff) throws JpaSystemException, CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
         return tariffService.createTariff(newTariff);
     }

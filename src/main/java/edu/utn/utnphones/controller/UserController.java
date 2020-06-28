@@ -46,13 +46,23 @@ public class UserController {
     }
 
 
-    /*
-    public void updateClient(String dni, ClientRequestDto newClient)throws JpaSystemException{
-        userService.updateClient(dni, newClient);
+
+    public void updateClient(String dni, ClientRequestDto newClient) throws UserNotFoundException, CityNotFoundException, ValidationException {
+
+        if ((dni != null) &&(!dni.isEmpty()) ) {
+            userService.updateClient(dni, newClient);
+        } else {
+            throw new ValidationException("dni must have a value");
+        }
     }
 
-    public void deleteClient(String  dni)throws JpaSystemException{
-        userService.deleteClient(dni);
+    public void deleteClient(String  dni) throws ValidationException, UserNotFoundException {
+
+        if ((dni != null) &&(!dni.isEmpty()) ) {
+            userService.deleteClient(dni);
+        } else {
+            throw new ValidationException("dni must have a value");
+        }
     }
-*/
+
 }

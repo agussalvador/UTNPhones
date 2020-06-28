@@ -27,10 +27,9 @@ public class UserService {
         this.cityDao = cityDao;
     }
 
-
     private User saveClient (ClientRequestDto newClient) throws NoSuchAlgorithmException {
         Long idUser = userDao.addClient(newClient.getCityId(), newClient.getFirstname(), newClient.getLastname(), newClient.getDni(), this.hashPwd(newClient.getPassword()), newClient.getTypeLine().name());
-        return userDao.findById(idUser).orElse(null);
+        return userDao.getOne(idUser);
     }
 
     public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
@@ -61,7 +60,6 @@ public class UserService {
         }
     }
 
-
     private String hashPwd(String pass) throws NoSuchAlgorithmException {
         MessageDigest m = MessageDigest.getInstance("MD5");
         byte[] data = pass.getBytes();
@@ -69,7 +67,6 @@ public class UserService {
         BigInteger i = new BigInteger(1, m.digest());
         return String.format("%1$032X", i);
     }
-
 
     public void updateClient(String dni, ClientRequestDto newClient) throws CityNotFoundException, UserNotFoundException {
 
@@ -82,15 +79,17 @@ public class UserService {
         existingUser.setLastname( (newClient.getLastname() != null) ? newClient.getLastname() : existingUser.getLastname() );
         existingUser.setDni( (newClient.getDni() != null) ? newClient.getDni() : existingUser.getDni() );
 
-        userDao.save(existingUser);
+        userDao.updateClient(existingUser.getCity().getCityId(), existingUser.getFirstname(), existingUser.getLastname(), existingUser.getDni(), existingUser.getUserId());
     }
 
-/*
-    public void deleteClient(String dni){
-        userDao.delete( userDao.getUserByDni(dni));
+
+    public void deleteClient(String dni) throws UserNotFoundException {
+
+        userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException());
+        userDao.removeClientByDni(dni);
     }
 
-*/
+
 
 }
 

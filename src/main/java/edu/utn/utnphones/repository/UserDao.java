@@ -26,8 +26,11 @@ public interface UserDao extends JpaRepository<User,Long> {
     @Query(value = "SELECT u.* FROM users u WHERE u.user_role = 'client' and u.enabled = true" , nativeQuery = true)
     List<User> findAllClients();
 
-//    void updateClient();
+    @Procedure(procedureName = "sp_update_user")
+    void updateClient(@Param("pIdCity") Long idCity , @Param("pFirstname") String firstname, @Param("pLastname") String lastname, @Param("pDni") String dni, @Param("pIdUser") Long idUser);
 
+    @Procedure(procedureName = "sp_delete_user")
+    void removeClientByDni(@Param("pDni") String dni );
 
 }
 

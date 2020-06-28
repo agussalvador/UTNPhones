@@ -33,7 +33,7 @@ public class InfraController {
     }
 
     @PostMapping
-    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws CallAlreadyExistsException, ValidationException, ParseException {
+    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws ValidationException, ParseException {
 
         Call call = callController.addCall(callDto);
         return ResponseEntity.created(getLocation(call)).build();
