@@ -1,7 +1,5 @@
 package edu.utn.utnphones.exceptions;
 
-import java.util.function.Supplier;
-
 public class CallAlreadyExistsException extends RecordExistsException {
 
     public CallAlreadyExistsException() {

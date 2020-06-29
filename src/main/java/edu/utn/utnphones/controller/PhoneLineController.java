@@ -7,7 +7,6 @@ import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.service.PhoneLineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -23,13 +22,18 @@ public class PhoneLineController {
     }
 
     // Create PhoneLine By User Id
-    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws JpaSystemException, ValidationException, UserNotFoundException {
-        return phoneLineService.addPhoneLine(newPhoneLine);
+    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws ValidationException, UserNotFoundException {
+
+        if((newPhoneLine.getDni() != null)&&(!newPhoneLine.getDni().isEmpty()) && (newPhoneLine.getTypeLine() != null) ){
+            return phoneLineService.addPhoneLine(newPhoneLine);
+        }else{
+            throw new ValidationException(" dni and typeLine must have a value ");
+        }
     }
 
     // Get PhoneLines by User Dni
     public List<PhoneLine> getPhoneLinesByUserDni(String dni) throws ValidationException, UserNotFoundException {
-        if (!dni.isEmpty()){
+        if ((dni != null) &&(!dni.isEmpty())){
             return phoneLineService.getPhoneLinesByUserDni(dni);
         }else {
             throw new ValidationException("dni must have a value");

@@ -3,14 +3,12 @@ package edu.utn.utnphones.service;
 import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.dto.CallRequestDto;
-import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.repository.CallDao;
 import edu.utn.utnphones.repository.CityDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -34,8 +32,8 @@ public class CallService {
         this.userService = userService;
     }
 
-    public Call addCall(CallRequestDto call) throws ValidationException, ParseException {
-        if(!call.isValid()) throw new ValidationException("Error - does not include all necessary information ");
+    public Call addCall(CallRequestDto call) throws ParseException {
+
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(call.getDate());
         Long idCall = callDao.saveCall(call.getNumberOrigin(), call.getNumberDestination(), call.getDuration(), date );
         return callDao.getOne(idCall);

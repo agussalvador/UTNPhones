@@ -3,7 +3,6 @@ package edu.utn.utnphones.controller.infrastructure;
 import edu.utn.utnphones.controller.CallController;
 import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.dto.CallRequestDto;
-import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +15,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api/infra")
 public class InfraController {
 
     private final CallController callController;
-    private SessionManager sessionManager;
 
     @Autowired
-    public InfraController(CallController callController, SessionManager sessionManager) {
+    public InfraController(CallController callController) {
         this.callController = callController;
-        this.sessionManager = sessionManager;
     }
 
     @PostMapping

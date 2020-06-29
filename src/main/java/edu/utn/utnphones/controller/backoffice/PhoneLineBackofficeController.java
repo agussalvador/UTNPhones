@@ -37,27 +37,27 @@ public class PhoneLineBackofficeController {
     public ResponseEntity<List<PhoneLine>> getPhoneLinesByDni(@RequestParam(value = "dni_client") String dni) throws ValidationException, UserNotFoundException {
 
         List<PhoneLine> phoneLines = phoneLineController.getPhoneLinesByUserDni(dni);
-        return (phoneLines.size() != 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (phoneLines.size() != 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.noContent().build();
     }
 
     @GetMapping("/")
     public ResponseEntity<List<PhoneLine>> getPhoneLines(){
 
         List<PhoneLine> phoneLines = phoneLineController.getPhoneLines();
-        return (phoneLines.size() > 0) ? ResponseEntity.ok(phoneLines): ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (phoneLines.size() > 0) ? ResponseEntity.ok(phoneLines) : ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PhoneLine>suspendPhone(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
+    public ResponseEntity<PhoneLine> suspendPhone(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
 
-        PhoneLine phoneLine = phoneLineController.deletePhoneLine(idPhoneLine);
+        phoneLineController.deletePhoneLine(idPhoneLine);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PhoneLine>updatePhoneLine(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
+    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
 
-        PhoneLine phoneLine = phoneLineController.updatePhoneLine(idPhoneLine);
+        phoneLineController.updatePhoneLine(idPhoneLine);
         return ResponseEntity.accepted().build();
     }
 

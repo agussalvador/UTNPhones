@@ -10,13 +10,11 @@ import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +36,9 @@ public class UserWebController {
 
 
     @GetMapping("/bills")
-    public ResponseEntity<List<Bill>> getBills(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "from", required = false) String from, @RequestParam(value = "to", required = false) String to) throws ParseException, UserNotFoundException {
+    public ResponseEntity<List<Bill>> getBills(@RequestHeader("Authorization") String sessionToken, String from, String to) throws ParseException, UserNotFoundException {
         User currentUser = getCurrentUser(sessionToken);
-        List<Bill> bills = new ArrayList<>();
+        List<Bill> bills ;
         if ((from != null) && (to != null)) {
             Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(from);
             Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(to);
@@ -48,14 +46,14 @@ public class UserWebController {
         } else {
             bills = billController.getBillsByUserId(currentUser.getUserId());
         }
-        return (bills.size() > 0) ? ResponseEntity.ok(bills) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (bills.size() > 0) ? ResponseEntity.ok(bills) : ResponseEntity.noContent().build();
     }
 
 
     @GetMapping("/calls")
     public ResponseEntity<List<CallView>> getCalls(@RequestHeader("Authorization") String sessionToken, @RequestParam(value = "from", required = false) String from, @RequestParam(value = "to", required = false) String to) throws ParseException, ValidationException, UserNotFoundException {
         User currentUser = getCurrentUser(sessionToken);
-        List<CallView> calls = new ArrayList<>();
+        List<CallView> calls;
         if ((from != null) && (to != null)) {
             Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(from);
             Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(to);
@@ -63,14 +61,14 @@ public class UserWebController {
         } else {
             calls = callController.getCallsByDni(currentUser.getDni());
         }
-        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.noContent().build();
     }
 
 
-    @GetMapping("/calls/cities")
-    public ResponseEntity<List<City>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException, ValidationException {
+    @GetMapping("/calls/top-10-cities")
+    public ResponseEntity<List<City>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException {
         List<City> callsDestination = callController.getTOP10MostCalledDestination(getCurrentUser(sessionToken).getUserId());
-        return (callsDestination.size() > 0) ? ResponseEntity.ok(callsDestination) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (callsDestination.size() > 0) ? ResponseEntity.ok(callsDestination) : ResponseEntity.noContent().build();
     }
 
 

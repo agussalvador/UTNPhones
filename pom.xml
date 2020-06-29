@@ -46,6 +46,7 @@
 						<exclude>**/config/**/*</exclude>
 						<exclude>**/domain/**/*</exclude>
 						<exclude>**/dto/**</exclude>
+						<exclude>**/controller/advice/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>

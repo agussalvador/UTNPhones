@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -64,18 +62,18 @@ public class CallsBackOficeControllerTest {
         assertEquals(204, response.getStatusCodeValue());
     }
 
-    @Test
+    @Test(expected = UserNotFoundException.class)
     public void testGetCallsByDniUserNotExist() throws ValidationException, UserNotFoundException {
 
         when(callController.getCallsByDni("3216954")).thenThrow(UserNotFoundException.class);
-        assertThrows(UserNotFoundException.class, () -> {  callsBackOficeController.getCallsByDni("3216954"); });
+        callsBackOficeController.getCallsByDni("3216954");
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void testGetCallsByDniEmpty() throws ValidationException, UserNotFoundException {
 
         when(callController.getCallsByDni("")).thenThrow(ValidationException.class);
-        assertThrows(ValidationException.class, () -> {  callsBackOficeController.getCallsByDni(""); });
+        callsBackOficeController.getCallsByDni("");
     }
 
 
@@ -111,18 +109,18 @@ public class CallsBackOficeControllerTest {
     }
 
 
-    @Test
+    @Test(expected = UserNotFoundException.class)
     public void testGetLast3CallsByDniNotExist() throws ValidationException, UserNotFoundException {
 
-        when(callController.getCallsByDni("3216954")).thenThrow(UserNotFoundException.class);
-        assertThrows(UserNotFoundException.class, () -> {  callsBackOficeController.getCallsByDni("3216954"); });
+        when(callController.getLast3CallsByDni("3216954")).thenThrow(UserNotFoundException.class);
+        callsBackOficeController.getLast3CallsByDni("3216954");
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void testGetLast3CallsByDniEmpty() throws ValidationException, UserNotFoundException {
 
         when(callController.getLast3CallsByDni("")).thenThrow(ValidationException.class);
-        assertThrows(ValidationException.class, () -> {  callsBackOficeController.getLast3CallsByDni(""); });
+        callsBackOficeController.getLast3CallsByDni("");
     }
 
 }

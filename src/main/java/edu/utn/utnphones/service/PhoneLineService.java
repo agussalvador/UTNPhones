@@ -4,7 +4,6 @@ import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.dto.PhoneLineRequestDto;
 import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
-import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.repository.PhoneLineDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +23,11 @@ public class PhoneLineService {
     }
 
     // Create PhoneLine By User Id
-    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws ValidationException, UserNotFoundException {
+    public PhoneLine addPhoneLine (PhoneLineRequestDto newPhoneLine) throws UserNotFoundException {
 
-        if((newPhoneLine.getDni() != null)&&(!newPhoneLine.getDni().isEmpty()) && (newPhoneLine.getTypeLine() != null)&&(!newPhoneLine.getTypeLine().toString().isEmpty()) ){
-            userService.getClientByDni(newPhoneLine.getDni());
-            Long idPhoneLine = phoneLineDao.generateNumber(newPhoneLine.getDni(), newPhoneLine.getTypeLine().name());
-            return phoneLineDao.getOne(idPhoneLine);
-        }else{
-            throw new ValidationException(" dni and typeLine must have a value ");
-        }
+        userService.getClientByDni(newPhoneLine.getDni());
+        Long idPhoneLine = phoneLineDao.generateNumber(newPhoneLine.getDni(), newPhoneLine.getTypeLine().name());
+        return phoneLineDao.getOne(idPhoneLine);
     }
 
     // get PhoneLines by User Dni

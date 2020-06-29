@@ -7,7 +7,6 @@ import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class TariffController {
         this.tariffService = tariffService;
     }
 
-    public Tariff createTariff (TariffRequestDto newTariff) throws JpaSystemException, CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
+    public Tariff createTariff (TariffRequestDto newTariff) throws CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
         return tariffService.createTariff(newTariff);
     }
 

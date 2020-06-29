@@ -3,13 +3,11 @@ package edu.utn.utnphones.controller;
 import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.dto.CallRequestDto;
-import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.service.CallService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
@@ -27,12 +25,13 @@ public class CallController {
     }
 
     public Call addCall(CallRequestDto call) throws ValidationException, ParseException {
+        if(!call.isValid()) throw new ValidationException("Error - does not include all necessary information ");
         return callService.addCall(call);
     }
 
     public List<CallView> getCallsByDni(String dni) throws ValidationException, UserNotFoundException {
 
-        if(!dni.isEmpty()){
+        if( (dni != null) &&(!dni.isEmpty()) ){
             return callService.getCallsByDni(dni);
         }else{
             throw new ValidationException("dni must have a value");
@@ -41,7 +40,7 @@ public class CallController {
 
     public List<CallView> getCallsByUserFilterByDate(String dni, Date from, Date to) throws ValidationException, UserNotFoundException {
 
-        if(!dni.isEmpty()){
+        if( (dni != null) &&(!dni.isEmpty()) ){
             return callService.getCallsByUserFilterByDate(dni, from, to);
         }else{
             throw new ValidationException("dni must have a value");
@@ -49,14 +48,13 @@ public class CallController {
     }
 
     public List<City> getTOP10MostCalledDestination(Long id) {
-
         return callService.getTOP10MostCalledDestination(id);
     }
 
 
     /*Parcial - Laborarotio V -  01-06-2020  */
     public List<CallView> getLast3CallsByDni( String dni ) throws UserNotFoundException, ValidationException {
-        if(!dni.isEmpty()){
+        if( (dni != null) &&(!dni.isEmpty()) ){
         return callService.getLast3CallsByDni(dni);
         }else{
             throw new ValidationException("dni must have a value");

@@ -26,7 +26,7 @@ public class BillController {
     }
 
     public List<Bill> getBillsByUserDni(String dni) throws UserNotFoundException, ValidationException {
-        if(!dni.isEmpty()){
+        if((dni != null) &&(!dni.isEmpty())){
             return billService.getBillsByUserDni(dni);
         }else{
             throw new ValidationException("dni must have a value");

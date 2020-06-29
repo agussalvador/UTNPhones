@@ -10,7 +10,6 @@ import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.TariffDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public class TariffService {
     }
 
     /*READ*/
-    public List<Tariff> readTariff()throws JpaSystemException{
+    public List<Tariff> readTariff(){
         return tariffDao.getAllTariffs();
     }
 

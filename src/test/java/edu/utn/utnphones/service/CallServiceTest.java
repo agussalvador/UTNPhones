@@ -8,16 +8,14 @@ import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.repository.CallDao;
 import edu.utn.utnphones.repository.CityDao;
-import lombok.Builder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
+import javax.validation.constraints.Null;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -97,12 +95,22 @@ public class CallServiceTest {
         Call returnedCall = callService.addCall(callDto);
 
         assertEquals(call, returnedCall);
+        verify(callDao, times(1)).saveCall(callDto.getNumberOrigin(), callDto.getNumberDestination(), callDto.getDuration(),date);
     }
 
-    @Test(expected = ValidationException.class)
-    public void testAddCallInvalidData() throws ValidationException, ParseException {
+    @Test(expected = ParseException.class)
+    public void testAddCallParseException() throws ParseException {
+        City cityOrigin = new City((long)1,"Mar del Plata", "0220", new Province((long)1, "Buenos Aires"));
+        City cityDestination = new City((long)25, "Cordoba","0351", new Province((long)5, "Cordoba"));
+        PhoneLine phoneLineOrigin = new PhoneLine((long)1, "2569369", TypeLine.mobile, true , null );
+        PhoneLine phoneLineDestination = new PhoneLine( (long)2, "2569369", TypeLine.mobile, true, null );
+        Call call = new Call((long)1, phoneLineOrigin, phoneLineDestination, cityOrigin, cityDestination , 68, 50, 48, LocalDateTime.ofInstant(fromDate.toInstant(), ZoneId.systemDefault()), false, null) ;
 
-        callDto = new CallRequestDto("","02206695236",123, "12/09/2020");
+        callDto = new CallRequestDto("02232569369","03512569369",123,"12/09/2020");
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(callDto.getDate());
+
+        when(callDao.saveCall(callDto.getNumberOrigin(), callDto.getNumberDestination(), callDto.getDuration(), date)).thenThrow(ParseException.class);
+
         callService.addCall(callDto);
     }
 

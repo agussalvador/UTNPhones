@@ -7,7 +7,6 @@ import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.*;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.UserDao;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -77,6 +76,7 @@ public class UserService {
         existingUser.setCity( city );
         existingUser.setFirstname( (newClient.getFirstname() != null) ? newClient.getFirstname() : existingUser.getFirstname() );
         existingUser.setLastname( (newClient.getLastname() != null) ? newClient.getLastname() : existingUser.getLastname() );
+
         existingUser.setDni( (newClient.getDni() != null) ? newClient.getDni() : existingUser.getDni() );
 
         userDao.updateClient(existingUser.getCity().getCityId(), existingUser.getFirstname(), existingUser.getLastname(), existingUser.getDni(), existingUser.getUserId());

@@ -1,10 +1,8 @@
 package edu.utn.utnphones.service;
 
 import edu.utn.utnphones.domain.Bill;
-import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.repository.BillDao;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +38,5 @@ public class BillService {
                 ZoneId.systemDefault()) ,LocalDateTime.ofInstant(to.toInstant(),
                 ZoneId.systemDefault()));
     }
-
 
 }

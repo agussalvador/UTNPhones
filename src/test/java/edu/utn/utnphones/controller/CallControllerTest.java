@@ -1,9 +1,9 @@
 package edu.utn.utnphones.controller;
 
-import edu.utn.utnphones.controller.backoffice.CallsBackOficeController;
-import edu.utn.utnphones.domain.*;
+import edu.utn.utnphones.domain.Call;
+import edu.utn.utnphones.domain.City;
+import edu.utn.utnphones.domain.Province;
 import edu.utn.utnphones.dto.CallRequestDto;
-import edu.utn.utnphones.exceptions.CallAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -68,12 +68,22 @@ public class CallControllerTest {
 
     /* test method : addCall */
     @Test
-    public void addCallOk() throws CallAlreadyExistsException, ParseException, ValidationException {
+    public void addCallOk() throws ParseException, ValidationException {
 
+        callRequestDto = new CallRequestDto("3216544","32198765",123, "12/09/2020");
         Call call = new Call();
         when(callService.addCall(callRequestDto)).thenReturn(call);
         Call callReturned = callController.addCall(callRequestDto);
         assertEquals(call, callReturned);
+
+        verify(callService, times(1)).addCall(callRequestDto);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testAddCallInvalidData() throws ParseException, ValidationException {
+
+        callRequestDto = new CallRequestDto("","",123, "12/09/2020");
+        callController.addCall(callRequestDto);
     }
 
     /* test method : callByDni */
@@ -100,6 +110,11 @@ public class CallControllerTest {
         callController.getCallsByDni("");
     }
 
+    @Test(expected = ValidationException.class)
+    public void testCallByDniNull() throws UserNotFoundException, ValidationException {
+        callController.getCallsByDni(null);
+    }
+
     /* test method : getCallsByUserFilterByDate */
     @Test
     public void getCallsByUserFilterByDateOk() throws UserNotFoundException, ValidationException {
@@ -123,6 +138,11 @@ public class CallControllerTest {
     public void testGetCallsByUserFilterByDateInvalidData() throws ValidationException, UserNotFoundException {
 
         callController.getCallsByUserFilterByDate("",fromDate, toDate);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testGetCallsByUserFilterByDateDniNull() throws ValidationException, UserNotFoundException {
+        callController.getCallsByUserFilterByDate(null,fromDate, toDate);
     }
 
     /* test method : getTOP10MostCalledDestination */
@@ -164,6 +184,11 @@ public class CallControllerTest {
     @Test(expected = ValidationException.class)
     public void testGetLast3CallsByDniInvalidData() throws UserNotFoundException, ValidationException {
         callController.getLast3CallsByDni("");
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testGetLast3CallsByDniNull() throws UserNotFoundException, ValidationException {
+        callController.getLast3CallsByDni(null);
     }
 
 
