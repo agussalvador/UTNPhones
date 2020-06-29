@@ -1,6 +1,7 @@
 package edu.utn.utnphones.service;
 
 
+import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.domain.User;
 import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.CityNotFoundException;
@@ -74,15 +75,10 @@ public class UserService {
     }
 
 
-
-
-
-
-    /*
-    public void updateClient(String dni, User newClient){
+    public void updateClient(String dni, User newClient) throws UserNotFoundException {
 
         City city = cityDao.findById(newClient.getCity().getCityId()).orElse(null);
-        User existingUser = userDao.getUserByDni(dni);
+        User existingUser = userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException());
 
         existingUser.setFirstname((newClient.getFirstname() != null) ? newClient.getFirstname() : existingUser.getFirstname() );
         existingUser.setLastname( (newClient.getLastname() != null) ? newClient.getLastname() : existingUser.getLastname() );
@@ -91,11 +87,10 @@ public class UserService {
         userDao.save(existingUser);
     }
 
-    public void deleteClient(String dni){
-        userDao.delete( userDao.getUserByDni(dni));
+    public void deleteClient(String dni) throws UserNotFoundException {
+        userDao.delete( userDao.findByDni(dni).orElseThrow(() -> new UserNotFoundException()));
     }
 
-*/
 
 }
 

@@ -14,5 +14,13 @@ public interface ClientView {
 
     Integer getCountPhoneLines();
 
+    void setDni(String dni);
+
+    void setFullNumber(String fullNumber);
+
+    void setCityAndProvince(String cityAndProvince);
+
+    void setCountPhoneLines(Integer countPhoneLines);
+
 
 }

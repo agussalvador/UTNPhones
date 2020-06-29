@@ -48,13 +48,12 @@ public class UserController {
     }
 
 
-    /*
-    public void updateClient(String dni, User newClient)throws JpaSystemException{
+    public void updateClient(String dni, User newClient) throws JpaSystemException, UserNotFoundException {
         userService.updateClient(dni, newClient);
     }
 
-    public void deleteClient(String  dni)throws JpaSystemException{
+    public void deleteClient(String  dni) throws JpaSystemException, UserNotFoundException {
         userService.deleteClient(dni);
     }
-*/
+
 }
