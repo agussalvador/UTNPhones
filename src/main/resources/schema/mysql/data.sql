@@ -66,5 +66,5 @@ INSERT into cities(id_province,city_name,area_code) values
 insert into users (id_city, firstname, lastname, dni, pwd, enabled, user_role )
 value (4, "Marcelo", "Gallardo", "25000999", md5("admin") ,1, "Employee");
 
-select  * from users;
+select  * from cities where id_province = 5;
 

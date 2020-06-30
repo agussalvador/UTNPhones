@@ -94,7 +94,7 @@ select * from users;
 select * from calls;
 # llamadas por rango de fechas
 select * from v_calls 
-where dni = 43143355 and call_date between "2020-01-30" and "2020-02-30" ;
+where dni = 43143355 and date between "2020-01-30" and "2020-02-30" ;
 
 
 /*  TOP 10 destination most called by user.dni */
@@ -129,34 +129,6 @@ INNER JOIN cities co ON cl.id_city_origin = co.id_city
 INNER JOIN cities cd ON cl.id_city_destination = cd.id_city
 INNER JOIN users u ON tlo.id_user = u.id_user
 WHERE tlo.enabled = 1 and dni = 43143355 and call_date between "2020-01-30" and "2020-02-30"  ;
-
-
-
-/*Parcial*/
-	select 		
-		dni,
-		phone_number_destination as phoneLineDestination ,
-		city_destination as cityDestination,
-		call_date as dateCall
-	from v_calls 
-	where dni = 43143355
-	
-	group by (call_date)
-	order by call_date desc
-	limit 3;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -20,4 +20,7 @@ public interface CityDao extends JpaRepository<City,Long> {
             "limit 10 ", nativeQuery = true)
     List<City> getTOP10MostCalledDestination(@Param("id") Long id);
 
+    @Query(value = "select c.* from cities c where c.id_city = :id" ,nativeQuery = true)
+    City getById(@Param("id") Long id);
+
 }

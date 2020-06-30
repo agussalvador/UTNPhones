@@ -48,12 +48,11 @@ public class TariffServiceTest {
 
         tariffRequestDto = new TariffRequestDto(3.5,5.5,city.getCityId(),city2.getCityId()) ;
 
-        when(cityDao.getOne(city.getCityId())).thenReturn(city);
-        when(cityDao.getOne(city2.getCityId())).thenReturn(city2);
-        when(tariffDao.create(city.getCityId(), city2.getCityId(), 3.5, 5.5)).thenReturn((long)123);
-        when(tariffDao.getById((long) 123)).thenReturn(tariff);
-
-        assertEquals(tariff, tariffService.createTariff(tariffRequestDto));
+        when(cityDao.getById(city.getCityId())).thenReturn(city);
+        when(cityDao.getById(city2.getCityId())).thenReturn(city2);
+        when(tariffDao.getByIdCities( city.getCityId(), city2.getCityId() )).thenReturn(null);
+        doNothing().when(tariffDao).create(city.getCityId(), city2.getCityId(), 3.5, 5.5);
+        tariffService.createTariff(tariffRequestDto);
         verify(tariffDao, times(1)).create(city.getCityId(), city2.getCityId(), 3.5, 5.5);
     }
 
@@ -75,17 +74,14 @@ public class TariffServiceTest {
         tariffService.createTariff(tariffRequestDto);
     }
 
-//    @Test
-//    public void testCreateTariffDataAccessException() throws TarriffAlreadyExistsException, CityNotFoundException {
-//
-//        tariffRequestDto = new TariffRequestDto(3.5,5.5,city.getCityId(),city2.getCityId()) ;
-//        when(cityDao.getOne(city.getCityId())).thenReturn(city);
-//        when(cityDao.getOne(city2.getCityId())).thenReturn(city2);
-//        String msg = "asd";
-//        when(tariffDao.create(city.getCityId(), city2.getCityId(), 3.5, 5.5)).thenThrow(DataAccessException.class);
-//        tariffService.createTariff(tariffRequestDto);
-//        assertThrows( TarriffAlreadyExistsException.class , () ->tariffService.createTariff(tariffRequestDto) );
-//    }
+    @Test(expected = TarriffAlreadyExistsException.class)
+    public void testCreateTariffAlreadyExist() throws TarriffAlreadyExistsException, CityNotFoundException {
+        tariffRequestDto = new TariffRequestDto(3.5,5.5,city.getCityId(),city2.getCityId()) ;
+        when(cityDao.getById(city.getCityId())).thenReturn(city);
+        when(cityDao.getById(city2.getCityId())).thenReturn(city2);
+        when(tariffDao.getByIdCities( city.getCityId(), city2.getCityId() )).thenReturn(tariff);
+        tariffService.createTariff(tariffRequestDto);
+    }
 
     @Test
     public void testReadTariffOk() {

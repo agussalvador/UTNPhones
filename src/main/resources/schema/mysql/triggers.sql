@@ -7,14 +7,12 @@ USE utn_phones;
 -- =================================================================
 --  USERS		
 -- =================================================================
-
-
 /*Verifica que el dni contenga solo numeros, y que el nombre y apellido no contenga numeros.*/
 #drop trigger TBI_user;
 DELIMITER $$
 CREATE TRIGGER TBI_user BEFORE INSERT ON users FOR EACH ROW 
 BEGIN
-	if( !IsNumeric(new.dni))then
+	if( !isNumeric(new.dni))then
 		signal sqlstate '10001' 
 		SET MESSAGE_TEXT = 'El dni tiene un formato incorrecto', 
 		MYSQL_ERRNO = 4;
@@ -33,15 +31,9 @@ BEGIN
 	end if;
 END $$ ;
 
-
-
-
 -- =================================================================
 --  TARIFFS
 -- =================================================================
-
-
-
 /*Verifica que el precio de costo sea menor al precio cuando insertamos.*/
 DELIMITER $$
 #drop trigger TBI_tariff;
@@ -67,10 +59,10 @@ BEGIN
 	end if;
 END $$;
 
-call sp_insert_tariffs(1,4,3,5);
+-- call sp_insert_tariffs(1,4,3,5);
 
-select * from v_tariffs;
-delete from tariffs where id_tariff = 5;
+-- select * from v_tariffs;
+-- delete from tariffs where id_tariff = 5;
 
 
 /*Verifica que el precio de costo sea menor al precio cuando updateamos.*/
@@ -84,8 +76,3 @@ BEGIN
 		MYSQL_ERRNO = 3;
 	end if;
 END $$
-
-
-select*from calls;
-
-select * from bills;

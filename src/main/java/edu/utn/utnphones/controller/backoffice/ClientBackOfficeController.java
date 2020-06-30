@@ -42,7 +42,7 @@ public class ClientBackOfficeController {
         return ResponseEntity.ok(client);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers(){
 
         List<User> clients = new ArrayList<>();

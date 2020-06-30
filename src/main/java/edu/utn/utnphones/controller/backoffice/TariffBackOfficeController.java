@@ -28,7 +28,6 @@ public class TariffBackOfficeController {
         this.tariffController = tariffController;
     }
 
-
     @PostMapping
     public ResponseEntity createTariff(@RequestBody TariffRequestDto newTariff) throws CityNotFoundException, ValidationException, JpaSystemException, TarriffAlreadyExistsException {
 

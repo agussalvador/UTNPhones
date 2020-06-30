@@ -26,20 +26,15 @@ public class TariffController {
         if(tariff.getPrice()==null || tariff.getCostPrice()==null ){
             throw new ValidationException("Error - cost or price, cannot be null");
         }else if(tariff.getCostPrice() <= tariff.getPrice()) {
-
             return tariffService.createTariff(tariff);
-
         }else{
             throw new ValidationException("Error - the price must be a most value than cost");
         }
     }
 
-
     public List<Tariff> readTariff(){
         return  tariffService.readTariff();
     }
-
-
 
     public void updateTariff ( TariffRequestDto tariff){
         tariffService.updateTariff(tariff);

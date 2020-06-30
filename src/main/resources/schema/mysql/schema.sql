@@ -2,7 +2,6 @@
 --  Trabajo Practico Integrador - UTNPhones 
 -- ==========================================================
 CREATE DATABASE utn_phones;
-
 USE utn_phones;
 SET GLOBAL time_zone = '-3:00';
 

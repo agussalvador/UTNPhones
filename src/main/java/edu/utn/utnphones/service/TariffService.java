@@ -27,16 +27,17 @@ public class TariffService {
     }
 
     /*CREATE*/
-    public Tariff createTariff(TariffRequestDto tariff) throws CityNotFoundException, TarriffAlreadyExistsException {
+    public Tariff createTariff(TariffRequestDto newTariff) throws CityNotFoundException, TarriffAlreadyExistsException {
 
-        City cityOrigin = cityDao.getOne(tariff.getCityOriginId());
+        City cityOrigin = cityDao.getById(newTariff.getCityOriginId());
         Optional.ofNullable(cityOrigin).orElseThrow(() -> new CityNotFoundException());
-        City cityDestination = cityDao.getOne(tariff.getCityDestinationId());
+        City cityDestination = cityDao.getById(newTariff.getCityDestinationId());
         Optional.ofNullable(cityDestination).orElseThrow(() -> new CityNotFoundException());
-        try{
-            Long idTariff = tariffDao.create(cityOrigin.getCityId(), cityDestination.getCityId(), tariff.getCostPrice(), tariff.getPrice());
-            return tariffDao.getById(idTariff);
-        }catch (DataAccessException ex){
+        Tariff tariff = tariffDao.getByIdCities( newTariff.getCityOriginId(), newTariff.getCityDestinationId() );
+        if(tariff == null){
+            tariffDao.create(cityOrigin.getCityId(), cityDestination.getCityId(), newTariff.getCostPrice(), newTariff.getPrice());
+            return tariffDao.getByIdCities(cityOrigin.getCityId(), cityDestination.getCityId());
+        }else{
             throw new TarriffAlreadyExistsException();
         }
     }

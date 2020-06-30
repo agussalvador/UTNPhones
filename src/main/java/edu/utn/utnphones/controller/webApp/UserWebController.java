@@ -64,13 +64,11 @@ public class UserWebController {
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/calls/top-10-cities")
     public ResponseEntity<List<City>> getTOP10MostCalledDestination (@RequestHeader("Authorization") String sessionToken) throws UserNotFoundException {
         List<City> callsDestination = callController.getTOP10MostCalledDestination(getCurrentUser(sessionToken).getUserId());
         return (callsDestination.size() > 0) ? ResponseEntity.ok(callsDestination) : ResponseEntity.noContent().build();
     }
-
 
     private User getCurrentUser(String sessionToken) throws UserNotFoundException {
         return Optional.ofNullable(sessionManager.getCurrentUser(sessionToken)).orElseThrow(UserNotFoundException::new);
