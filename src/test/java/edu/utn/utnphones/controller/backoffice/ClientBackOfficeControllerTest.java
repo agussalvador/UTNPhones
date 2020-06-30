@@ -85,45 +85,45 @@ public class ClientBackOfficeControllerTest {
         ResponseEntity<List<User>> responseEntity = clientBackOfficeController.getAllUsers();
         assertEquals(responseEntity.getStatusCodeValue(),204);
     }
-/*
-    @Test
-    void updateUserByDniOk() throws UserNotFoundException {
-        User user = new User();
 
-        doNothing().when(userController).updateClient("1234", user);
-        ResponseEntity<User> responseEntity = clientBackOfficeController.updateUserByDni("1234",user);
-        verify(userController, times(1)).updateClient("1234", user);
-
-        assertEquals(responseEntity, ResponseEntity.accepted().build());
-
-    }
-
-    @Test
-    void updateUserByDniException() throws UserNotFoundException {
-        User user = new User();
-        doNothing().when(userController).updateClient("1234", user);
-        when(clientBackOfficeController.updateUserByDni("1234",user)).thenThrow((new JpaSystemException(new RuntimeException(new SQLException()))));
-        ResponseEntity<User> responseEntity = clientBackOfficeController.updateUserByDni("1234",user);
-        assertEquals(responseEntity,ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-    }
-    */
-    @Test
-    public void deleteClientOk() throws UserNotFoundException, ValidationException {
-
-        doNothing().when(userController).deleteClient("1234");
-        ResponseEntity<User> responseEntity = clientBackOfficeController.deleteClient("1234");
-        verify(userController, times(1)).deleteClient("1234");
-        assertEquals(responseEntity, ResponseEntity.ok().build());
-    }
-/*
-    @Test
-    void deleteClientException() throws UserNotFoundException, ValidationException {
-
-        doNothing().when(userController).deleteClient("1234");
-        when(clientBackOfficeController.deleteClient("1234")).thenThrow((new JpaSystemException(new RuntimeException(new SQLException()))));
-        ResponseEntity<User> responseEntity = clientBackOfficeController.deleteClient("1234");
-        assertEquals(responseEntity,ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-    }*/
+//
+//    @Test
+//    void updateUserByDniOk() throws UserNotFoundException {
+//        User user = new User();
+//
+//        doNothing().when(userController).updateClient("1234", user);
+//        ResponseEntity<User> responseEntity = clientBackOfficeController.updateUserByDni("1234",user);
+//        verify(userController, times(1)).updateClient("1234", user);
+//
+//        assertEquals(responseEntity, ResponseEntity.accepted().build());
+//
+//    }
+//
+//    @Test
+//    void updateUserByDniException() throws UserNotFoundException {
+//        User user = new User();
+//        doNothing().when(userController).updateClient("1234", user);
+//        when(clientBackOfficeController.updateUserByDni("1234",user)).thenThrow((new JpaSystemException(new RuntimeException(new SQLException()))));
+//        ResponseEntity<User> responseEntity = clientBackOfficeController.updateUserByDni("1234",user);
+//        assertEquals(responseEntity,ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+//    }
+//    @Test
+//    public void deleteClientOk() throws UserNotFoundException, ValidationException {
+//
+//        doNothing().when(userController).deleteClient("1234");
+//        ResponseEntity<User> responseEntity = clientBackOfficeController.deleteClient("1234");
+//        verify(userController, times(1)).deleteClient("1234");
+//        assertEquals(responseEntity, ResponseEntity.ok().build());
+//    }
+//
+//    @Test
+//    void deleteClientException() throws UserNotFoundException, ValidationException {
+//
+//        doNothing().when(userController).deleteClient("1234");
+//        when(clientBackOfficeController.deleteClient("1234")).thenThrow((new JpaSystemException(new RuntimeException(new SQLException()))));
+//        ResponseEntity<User> responseEntity = clientBackOfficeController.deleteClient("1234");
+//        assertEquals(responseEntity,ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+//    }
 
 
 }

@@ -21,8 +21,17 @@ public class TariffController {
         this.tariffService = tariffService;
     }
 
-    public Tariff createTariff (TariffRequestDto newTariff) throws CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
-        return tariffService.createTariff(newTariff);
+    public Tariff createTariff (TariffRequestDto tariff) throws CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
+
+        if(tariff.getPrice()==null || tariff.getCostPrice()==null ){
+            throw new ValidationException("Error - cost or price, cannot be null");
+        }else if(tariff.getCostPrice() <= tariff.getPrice()) {
+
+            return tariffService.createTariff(tariff);
+
+        }else{
+            throw new ValidationException("Error - the price must be a most value than cost");
+        }
     }
 
 

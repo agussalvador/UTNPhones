@@ -5,6 +5,7 @@ import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.dto.CallRequestDto;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.session.SessionManager;
+import edu.utn.utnphones.utils.UriUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,18 +29,12 @@ public class InfraController {
     }
 
     @PostMapping
-    public ResponseEntity<Call> addCall(@RequestBody CallRequestDto callDto) throws ValidationException, ParseException {
+    public ResponseEntity addCall(@RequestBody CallRequestDto callDto) throws ValidationException, ParseException {
 
         Call call = callController.addCall(callDto);
-        return ResponseEntity.created(getLocation(call)).build();
+        return ResponseEntity.created(UriUtils.getLocation(call.getCallId())).build();
     }
 
-    private URI getLocation(Call call) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(call.getCallId())
-                .toUri();
-    }
+
 
 }

@@ -20,8 +20,8 @@ public interface PhoneLineDao extends JpaRepository<PhoneLine,Long> {
 
     //delete
     @Transactional
-    @Procedure(procedureName = "sp_suspend_phone_line", outputParameterName = "pIdPhone")
-    Long  suspendPhoneLine(@Param("pIdPhoneLine") Long IdPhoneLine);
+    @Procedure(procedureName = "sp_suspend_phone_line")
+    void  suspendPhoneLine(@Param("pIdPhoneLine") Long IdPhoneLine);
 
     //update
     @Transactional

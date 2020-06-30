@@ -14,7 +14,7 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
 
     /*CREATE*/
     @Procedure(procedureName = "sp_insert_tariff", outputParameterName = "pIdTariff")
-    public Long create(@Param("pId_city_origin") Long idCityOrigin,
+    Long create(@Param("pId_city_origin") Long idCityOrigin,
                          @Param("pId_city_destination") Long idCityDestination,
                          @Param("pCost_price") Double costPrice,
                          @Param("pPrice") Double price) throws DataAccessException;
@@ -24,7 +24,7 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
     List<Tariff> getAllTariffs()throws JpaSystemException;
 
 
-    @Query(value = "SELECT t.* FROM tariffs t t.id = :id", nativeQuery = true)
+    @Query(value = "SELECT t.* FROM tariffs t t.id_tariff = :id", nativeQuery = true)
     Tariff getById(@Param("id") Long id);
 
         /*UPDATE*/

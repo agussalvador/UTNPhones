@@ -108,7 +108,6 @@ public class CallsBackOficeControllerTest {
         assertEquals(204, response.getStatusCodeValue());
     }
 
-
     @Test(expected = UserNotFoundException.class)
     public void testGetLast3CallsByDniNotExist() throws ValidationException, UserNotFoundException {
 
@@ -122,5 +121,6 @@ public class CallsBackOficeControllerTest {
         when(callController.getLast3CallsByDni("")).thenThrow(ValidationException.class);
         callsBackOficeController.getLast3CallsByDni("");
     }
+
 
 }

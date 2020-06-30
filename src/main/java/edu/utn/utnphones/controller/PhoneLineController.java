@@ -45,13 +45,23 @@ public class PhoneLineController {
     }
 
     // Delete PhoneLine
-    public PhoneLine deletePhoneLine(Long idPhone) throws PhoneLineNotFoundException {
-        return phoneLineService.deletePhoneLine(idPhone);
+    public void deletePhoneLine(Long idPhone) throws PhoneLineNotFoundException, ValidationException {
+
+        if(idPhone!=null){
+            phoneLineService.deletePhoneLine(idPhone);
+        }else{
+            throw new ValidationException("idPhone cannot be null");
+        }
     }
 
     // Update PhoneLine By User Dni
-    public PhoneLine updatePhoneLine(Long idPhone) throws PhoneLineNotFoundException {
-        return phoneLineService.updatePhoneLine(idPhone);
+    public PhoneLine updatePhoneLine(Long idPhone) throws PhoneLineNotFoundException, ValidationException {
+
+        if(idPhone!=null){
+            return phoneLineService.updatePhoneLine(idPhone);
+        }else{
+            throw new ValidationException("idPhone cannot be null");
+        }
     }
 
 }

@@ -114,24 +114,24 @@ public class PhoneLineControllerTest {
 
     //DeletePhoneLine
     @Test
-    public void testDeletePhoneLineOk() throws PhoneLineNotFoundException {
+    public void testDeletePhoneLineOk() throws PhoneLineNotFoundException, ValidationException {
 
-        when(phoneLineService.deletePhoneLine((long)654)).thenReturn(phoneLine);
-        PhoneLine returnedPhoneLine = phoneLineController.deletePhoneLine((long)654);
-        assertEquals(phoneLine, returnedPhoneLine);
+        doNothing().when(phoneLineService).deletePhoneLine((long)654);
+        phoneLineController.deletePhoneLine((long)654);
         verify(phoneLineService, times(1)).deletePhoneLine((long)654);
     }
 
-    @Test(expected = PhoneLineNotFoundException.class)
-    public void testDeletePhoneLinePhoneLineNotFoundException() throws PhoneLineNotFoundException {
+    @Test(expected = ValidationException.class)
+    public void testDeletePhoneLineNull() throws PhoneLineNotFoundException, ValidationException {
 
-        when(phoneLineService.deletePhoneLine((long)987)).thenThrow(PhoneLineNotFoundException.class);
-        phoneLineController.deletePhoneLine((long)987);
+        doNothing().when(phoneLineService).deletePhoneLine(null);
+        phoneLineController.deletePhoneLine(null);
+        verify(phoneLineService, times(1)).deletePhoneLine(null);
     }
 
     //UpdatePhoneLine
     @Test
-    public void testUpdatePhoneLineOk() throws PhoneLineNotFoundException {
+    public void testUpdatePhoneLineOk() throws PhoneLineNotFoundException, ValidationException {
 
         when(phoneLineService.updatePhoneLine((long)654)).thenReturn(phoneLine);
         PhoneLine returnedPhoneLine = phoneLineController.updatePhoneLine((long)654);
@@ -140,10 +140,17 @@ public class PhoneLineControllerTest {
     }
 
     @Test(expected = PhoneLineNotFoundException.class)
-    public void testUpdatePhoneLinePhoneLineNotFoundException() throws PhoneLineNotFoundException {
+    public void testUpdatePhoneLineNotFoundException() throws PhoneLineNotFoundException, ValidationException {
 
         when(phoneLineService.updatePhoneLine((long)987)).thenThrow(PhoneLineNotFoundException.class);
         phoneLineController.updatePhoneLine((long)987);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testUpdatePhoneLineNull() throws PhoneLineNotFoundException, ValidationException {
+
+        when(phoneLineService.updatePhoneLine(null)).thenThrow(ValidationException.class);
+        phoneLineController.updatePhoneLine((null));
     }
 
 

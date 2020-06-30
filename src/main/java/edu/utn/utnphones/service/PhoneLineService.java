@@ -42,11 +42,10 @@ public class PhoneLineService {
     }
 
     // Delete PhoneLine By User Dni
-    public PhoneLine deletePhoneLine(Long idPhoneLine) throws PhoneLineNotFoundException {
-        PhoneLine phoneLine = phoneLineDao.findById(idPhoneLine).orElse(null);
+    public void deletePhoneLine(Long idPhoneLine) throws PhoneLineNotFoundException {
+        PhoneLine phoneLine = phoneLineDao.getOne(idPhoneLine);
         if(phoneLine != null && phoneLine.getEnabled()) {
             phoneLineDao.suspendPhoneLine(idPhoneLine);
-            return phoneLineDao.getOne(idPhoneLine);
         }else{
             throw new PhoneLineNotFoundException("Error: unable to delete phone line.");
         }
@@ -54,7 +53,7 @@ public class PhoneLineService {
 
     // Update PhoneLine (active line suspendida)
     public PhoneLine updatePhoneLine(Long idPhoneLine) throws PhoneLineNotFoundException {
-        PhoneLine phoneLine = phoneLineDao.findById(idPhoneLine).orElse(null);
+        PhoneLine phoneLine = phoneLineDao.getOne(idPhoneLine);
         if(phoneLine != null && !phoneLine.getEnabled()) {
             phoneLineDao.activePhoneLine(idPhoneLine);
             return phoneLineDao.getOne(idPhoneLine);

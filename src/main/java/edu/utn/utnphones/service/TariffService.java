@@ -14,6 +14,7 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TariffService {
@@ -28,21 +29,17 @@ public class TariffService {
     }
 
     /*CREATE*/
-    public Tariff createTariff(TariffRequestDto tariff) throws CityNotFoundException, ValidationException, TarriffAlreadyExistsException {
+    public Tariff createTariff(TariffRequestDto tariff) throws CityNotFoundException, TarriffAlreadyExistsException {
 
-        if(tariff.getPrice()==null || tariff.getCostPrice()==null ){
-            throw new ValidationException("Error - cost or price, cannot be null");
-        }else if(tariff.getCostPrice() <= tariff.getPrice()) {
-            City cityOrigin = cityDao.findById(tariff.getCityOriginId()).orElseThrow(() -> new CityNotFoundException());
-            City cityDestination = cityDao.findById(tariff.getCityDestinationId()).orElseThrow(() -> new CityNotFoundException());
-            try{
-                Long idTariff = tariffDao.create(cityOrigin.getCityId(), cityDestination.getCityId(), tariff.getCostPrice(), tariff.getPrice());
-                return tariffDao.getById(idTariff);
-            }catch (DataAccessException ex){
-                throw new TarriffAlreadyExistsException();
-            }
-        }else{
-            throw new ValidationException("Error - the price must be a most value than cost");
+        City cityOrigin = cityDao.getOne(tariff.getCityOriginId());
+        Optional.ofNullable(cityOrigin).orElseThrow(() -> new CityNotFoundException());
+        City cityDestination = cityDao.getOne(tariff.getCityDestinationId());
+        Optional.ofNullable(cityDestination).orElseThrow(() -> new CityNotFoundException());
+        try{
+            Long idTariff = tariffDao.create(cityOrigin.getCityId(), cityDestination.getCityId(), tariff.getCostPrice(), tariff.getPrice());
+            return tariffDao.getById(idTariff);
+        }catch (DataAccessException ex){
+            throw new TarriffAlreadyExistsException();
         }
     }
 

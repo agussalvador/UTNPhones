@@ -7,6 +7,7 @@ import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
+import edu.utn.utnphones.utils.UriUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class ClientBackOfficeController {
     public ResponseEntity<User> addNewClient(@RequestBody ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
 
         User user = userController.addClient(newClient);
-        return ResponseEntity.created(getLocation(user)).build();
+        return ResponseEntity.created(UriUtils.getLocation(user.getUserId())).build();
     }
 
     @GetMapping
@@ -64,15 +65,6 @@ public class ClientBackOfficeController {
 
         userController.deleteClient(dni);
         return ResponseEntity.ok().build();
-    }
-
-
-    private URI getLocation(User user) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getUserId())
-                .toUri();
     }
 
 }
