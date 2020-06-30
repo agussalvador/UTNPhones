@@ -41,12 +41,16 @@
 				<version>0.8.2</version>
 				<configuration>
 					<excludes>
-						<exclude>**/session/**</exclude>
-						<exclude>**/exceptions/**</exclude>
-						<exclude>**/config/**/*</exclude>
-						<exclude>**/domain/**/*</exclude>
-						<exclude>**/dto/**</exclude>
-						<exclude>**/controller/advice/**</exclude>
+
+                    <exclude>**/domain/**/*</exclude>
+                    <exclude>**/dto/**</exclude>
+                    <exclude>**/session/**</exclude>
+                    <exclude>**/config/**/*</exclude>
+                    <exclude>**/exceptions/**</exclude>
+                    <exclude>**/utils/**</exclude>
+					<exclude>**/controller/advice/**</exclude>
+					<exclude>**/UtnPhonesApplication.class</exclude>
+
 					</excludes>
 				</configuration>
 				<executions>

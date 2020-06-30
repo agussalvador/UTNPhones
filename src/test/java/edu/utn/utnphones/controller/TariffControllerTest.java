@@ -6,7 +6,6 @@ import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.service.TariffService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,26 +35,42 @@ public class TariffControllerTest {
 
     @Test
     public void createTariffOk() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
-        TariffRequestDto tariffRequestDto = new TariffRequestDto(6.0,3.0,(long)4,(long)7);
+        TariffRequestDto tariffRequestDto = new TariffRequestDto(3.0,6.0,(long)4,(long)7);
         when(tariffService.createTariff(tariffRequestDto)).thenReturn(tariff);
         Tariff tariff1 = tariffController.createTariff(tariffRequestDto);
         assertEquals(tariff1,tariff);
     }
 
     @Test
-    public void createTariffAlreadyExist() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
-
-        TariffRequestDto tariffRequestDto = new TariffRequestDto(6.0,3.0,(long)4,(long)7);
-        when(tariffService.createTariff(tariffRequestDto)).thenThrow((new TarriffAlreadyExistsException("Already exist")));
-        assertThrows(TarriffAlreadyExistsException.class, () -> tariffController.createTariff(tariffRequestDto));
-    }
-
-    @Test
     public void createTariffCityNotFound() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
 
-        TariffRequestDto tariffRequestDto = new TariffRequestDto(6.0,3.0,(long)4,(long)7);
+        TariffRequestDto tariffRequestDto = new TariffRequestDto(3.0,6.0,(long)4,(long)7);
         when(tariffService.createTariff(tariffRequestDto)).thenThrow((new CityNotFoundException()));
         assertThrows(CityNotFoundException.class, () -> tariffController.createTariff(tariffRequestDto));
+    }
+
+    @Test(expected = ValidationException.class)
+    public void createTariffCityInvalidData() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
+
+        TariffRequestDto tariffRequestDto = new TariffRequestDto(6.0,3.0,(long)4,(long)7);
+        when(tariffService.createTariff(tariffRequestDto)).thenThrow(ValidationException.class);
+        tariffController.createTariff(tariffRequestDto);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void createTariffCityInvalidData2() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
+
+        TariffRequestDto tariffRequestDto = new TariffRequestDto(null,3.0,(long)4,(long)7);
+        when(tariffService.createTariff(tariffRequestDto)).thenThrow(ValidationException.class);
+        tariffController.createTariff(tariffRequestDto);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void createTariffCityInvalidData3() throws TarriffAlreadyExistsException, CityNotFoundException, ValidationException {
+
+        TariffRequestDto tariffRequestDto = new TariffRequestDto(3.5,null,(long)4,(long)7);
+        when(tariffService.createTariff(tariffRequestDto)).thenThrow(ValidationException.class);
+        tariffController.createTariff(tariffRequestDto);
     }
 
     @Test

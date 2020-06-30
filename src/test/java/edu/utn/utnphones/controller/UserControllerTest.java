@@ -6,7 +6,6 @@ import edu.utn.utnphones.domain.enums.TypeLine;
 import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.*;
 import edu.utn.utnphones.service.UserService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,8 +32,8 @@ public class UserControllerTest {
     public void setUp() {
         initMocks(this);
         userController = new UserController(userService);
-        clientDto = new ClientRequestDto((long) 1, "Santiago", "labatut", "4333444","123asd", TypeLine.home);
-        user = new User((long) 1, "4333444", "santiago", "labatut", "pwd123", true, Role.client, null);
+        clientDto = new ClientRequestDto((long) 1, "Agustin", "Salvador", "4333444","123asd", TypeLine.home);
+        user = new User((long) 1, "123", "Agustin", "Salvador", "pwd123", true, Role.client, null);
     }
 
     @Test
@@ -121,8 +120,9 @@ public class UserControllerTest {
 
     @Test
     public void updateClientOk() throws UserNotFoundException, CityNotFoundException, ValidationException {
-        doNothing().when(userService).updateClient("123",clientDto);
-        userController.updateClient("123",clientDto);
+        when(userService.updateClient("123",clientDto)).thenReturn(user);
+        User returnedUser = userController.updateClient("123",clientDto);
+        assertEquals(user, returnedUser);
         verify(userService, times(1)).updateClient("123",clientDto);
     }
 
@@ -137,10 +137,21 @@ public class UserControllerTest {
     }
 
     @Test
-    public void deleteClientOk() throws UserNotFoundException, ValidationException {
+    public void testDeleteClientOk() throws UserNotFoundException, ValidationException {
         doNothing().when(userService).deleteClient("123");
         userController.deleteClient("123");
         verify(userService, times(1)).deleteClient("123");
     }
+
+    @Test
+    public void testDeleteClientDniNull(){
+        assertThrows(ValidationException.class, () -> userController.deleteClient(null) );
+    }
+
+    @Test
+    public void testDeleteClientDniEmpty(){
+        assertThrows(ValidationException.class, () -> userController.deleteClient("") );
+    }
+
 }
 

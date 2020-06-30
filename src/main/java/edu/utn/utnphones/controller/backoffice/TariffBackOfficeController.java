@@ -7,15 +7,13 @@ import edu.utn.utnphones.dto.TariffRequestDto;
 import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.session.SessionManager;
+import edu.utn.utnphones.utils.UriUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +28,11 @@ public class TariffBackOfficeController {
         this.tariffController = tariffController;
     }
 
-
     @PostMapping
-    public ResponseEntity<Tariff> createTariff(@RequestBody TariffRequestDto newTariff) throws CityNotFoundException, ValidationException, JpaSystemException, TarriffAlreadyExistsException {
+    public ResponseEntity createTariff(@RequestBody TariffRequestDto newTariff) throws CityNotFoundException, ValidationException, JpaSystemException, TarriffAlreadyExistsException {
 
         Tariff tariff = tariffController.createTariff(newTariff);
-        return ResponseEntity.created(getLocation(tariff)).build();
+        return ResponseEntity.created(UriUtils.getLocation(tariff.getTariffId())).build();
     }
 
     @GetMapping
@@ -62,12 +59,6 @@ public class TariffBackOfficeController {
 
 
 
-    private URI getLocation(Tariff tariff) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(tariff.getTariffId())
-                .toUri();
-    }
+
 
 }

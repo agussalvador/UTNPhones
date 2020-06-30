@@ -4,7 +4,6 @@ import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.dto.CallRequestDto;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
-import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.projection.CallView;
 import edu.utn.utnphones.repository.CallDao;
 import edu.utn.utnphones.repository.CityDao;

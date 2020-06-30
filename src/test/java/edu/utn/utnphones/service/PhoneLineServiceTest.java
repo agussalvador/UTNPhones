@@ -50,8 +50,9 @@ public class PhoneLineServiceTest {
 
         User user = new User((long)1, "32165498","Juan","Perez","12354",true, Role.client,null );
         Long id = (long)123;
-        PhoneLine phoneLine = new PhoneLine((long)123, "1234", TypeLine.mobile , true, null);
+        PhoneLine phoneLine = new PhoneLine((long)123, "1234", TypeLine.mobile , true, user);
         phoneLineDto = new PhoneLineRequestDto("32165498", TypeLine.mobile);
+
         when(userService.getClientByDni("32165498")).thenReturn(user);
 
         when(phoneLineDao.generateNumber("32165498", "mobile" )).thenReturn(id);
@@ -103,21 +104,16 @@ public class PhoneLineServiceTest {
     public void testDeletePhoneLineOk() throws PhoneLineNotFoundException {
 
         phoneLine = new PhoneLine((long)14, "5677362", TypeLine.home, true, null);
-
-        when(phoneLineDao.findById((long)14)).thenReturn(Optional.ofNullable(phoneLine));
-        when(phoneLineDao.suspendPhoneLine((long)14)).thenReturn((long)14);
         when(phoneLineDao.getOne((long)14)).thenReturn(phoneLine);
-
-        PhoneLine returnedPhoneLine = phoneLineService.deletePhoneLine((long)14);
-
-        assertEquals(phoneLine, returnedPhoneLine);
+        doNothing().when(phoneLineDao).suspendPhoneLine((long)14);
+        phoneLineService.deletePhoneLine((long)14);
         verify(phoneLineDao,times(1)).suspendPhoneLine((long)14);
     }
 
     @Test(expected = PhoneLineNotFoundException.class)
     public void testDeletePhoneLinePhoneLineNotFoundException() throws PhoneLineNotFoundException {
 
-        when(phoneLineDao.findById((long)12)).thenThrow(PhoneLineNotFoundException.class);
+        when(phoneLineDao.getOne((long)12)).thenThrow(PhoneLineNotFoundException.class);
         phoneLineService.deletePhoneLine((long)12);
     }
 
@@ -125,7 +121,7 @@ public class PhoneLineServiceTest {
     public void testDeletePhoneLineEnabledFalse() throws PhoneLineNotFoundException {
 
         phoneLine.setEnabled(false);
-        when(phoneLineDao.findById((long)14)).thenReturn(Optional.ofNullable(phoneLine));
+        when(phoneLineDao.getOne((long)14)).thenReturn(phoneLine);
         phoneLineService.deletePhoneLine( (long)14 );
     }
 
@@ -133,7 +129,7 @@ public class PhoneLineServiceTest {
     public void testDeletePhoneLineNull() throws PhoneLineNotFoundException {
 
         phoneLine = null;
-        when(phoneLineDao.findById((long)14)).thenReturn(Optional.ofNullable(phoneLine));
+        when(phoneLineDao.getOne((long)14)).thenReturn(phoneLine);
         phoneLineService.deletePhoneLine( (long)14 );
     }
 
@@ -155,7 +151,7 @@ public class PhoneLineServiceTest {
     @Test(expected = PhoneLineNotFoundException.class)
     public void testUpdatePhoneLineLineNotFoundException() throws PhoneLineNotFoundException {
 
-        when(phoneLineDao.findById((long)12)).thenThrow(PhoneLineNotFoundException.class);
+        when(phoneLineDao.getOne((long)12)).thenThrow(PhoneLineNotFoundException.class);
         phoneLineService.updatePhoneLine((long)12);
     }
 
@@ -163,7 +159,7 @@ public class PhoneLineServiceTest {
     public void testUpdatePhoneLineLineEnabledFalse() throws PhoneLineNotFoundException {
 
         phoneLine.setEnabled(true);
-        when(phoneLineDao.findById((long)14)).thenReturn(Optional.ofNullable(phoneLine));
+        when(phoneLineDao.getOne((long)14)).thenReturn(phoneLine);
         phoneLineService.updatePhoneLine( (long)14 );
     }
 
@@ -171,7 +167,7 @@ public class PhoneLineServiceTest {
     public void testUpdatePhoneLineLineNull() throws PhoneLineNotFoundException {
 
         phoneLine = null;
-        when(phoneLineDao.findById((long)14)).thenReturn(Optional.ofNullable(phoneLine));
+        when(phoneLineDao.getOne((long)14)).thenReturn(phoneLine);
         phoneLineService.updatePhoneLine( (long)14 );
     }
 

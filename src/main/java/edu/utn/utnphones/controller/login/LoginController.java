@@ -29,14 +29,14 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto) throws InvalidLoginException, ValidationException {
+    public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto) throws InvalidLoginException, ValidationException, NoSuchAlgorithmException {
         String token = null;
         ResponseEntity response;
         try {
             User user = userController.login(loginRequestDto.getDni(), loginRequestDto.getPassword());
             token = sessionManager.createSession(user);
             response = ResponseEntity.ok().headers(createHeaders(token)).build();
-        } catch (UserNotFoundException | NoSuchAlgorithmException e) {
+        } catch (UserNotFoundException e) {
             throw new InvalidLoginException(e);
         }
         return response;

@@ -46,9 +46,9 @@ public class UserController {
         return userService.getAllClients();
     }
 
-    public void updateClient(String dni, ClientRequestDto newClient) throws UserNotFoundException, CityNotFoundException, ValidationException {
+    public User updateClient(String dni, ClientRequestDto newClient) throws UserNotFoundException, CityNotFoundException, ValidationException {
         if ((dni != null) &&(!dni.isEmpty()) ) {
-            userService.updateClient(dni, newClient);
+            return userService.updateClient(dni, newClient);
         } else {
             throw new ValidationException("dni must have a value");
         }

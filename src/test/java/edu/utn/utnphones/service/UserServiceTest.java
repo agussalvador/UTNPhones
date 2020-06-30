@@ -7,22 +7,20 @@ import edu.utn.utnphones.domain.enums.Role;
 import edu.utn.utnphones.domain.enums.TypeLine;
 import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.CityNotFoundException;
+import edu.utn.utnphones.exceptions.InvalidLoginException;
 import edu.utn.utnphones.exceptions.UserAlreadyExistsException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
-import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.UserDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -32,7 +30,7 @@ public class UserServiceTest {
     City city;
     User user;
     List<User> userList;
-    ClientRequestDto clientRequestDto;
+    ClientRequestDto clientDto;
 
     @Mock
     private UserDao userDao;
@@ -44,112 +42,165 @@ public class UserServiceTest {
         initMocks(this);
         userService = new UserService(userDao, cityDao);
 
-        clientRequestDto = new ClientRequestDto((long) 1, "Juan", "Perez", "32165498","321asd", TypeLine.home);
-
         city = new City((long)1,"Mar del plata","0223",null);
-        user = new User((long) 1, "32165498", "Joaquin", "Lopez", "pwd123", true, Role.client, city);
-        userList = new ArrayList<>();
+        user = new User((long) 1, "98765421", "Juan", "Perez", "321asd", true, Role.client, city);
+        userList = new ArrayList<User>();
         userList.add(user);
     }
 
-/*
     @Test
-    public void addClientOk() throws UserAlreadyExistsException, CityNotFoundException, ValidationException, NoSuchAlgorithmException {
+    public void testLoginOk() throws UserNotFoundException, NoSuchAlgorithmException, InvalidLoginException {
+        User loggedUser = new User((long) 1, "98765421", "Juan", "Perez", "pwd", true, Role.client, city);;
 
-        when(userDao.findByDni(clientRequestDto.getDni()) ).thenReturn(null);
-        when(cityDao.findById(clientRequestDto.getCityId())).thenReturn(Optional.ofNullable(city));
+        when(userDao.getUserByDniAndPwd("98765421", userService.hashPwd("321asd"))).thenReturn(loggedUser);
+        User returnedUser = userService.login("98765421","321asd");
+        assertEquals(loggedUser.getUserId(), returnedUser.getUserId());
+        assertEquals(loggedUser.getDni(), returnedUser.getDni());
+        assertEquals(loggedUser.getPassword(), returnedUser.getPassword());
 
-        when(userDao.addClient(clientRequestDto.getCityId(), clientRequestDto.getFirstname(), clientRequestDto.getLastname(), clientRequestDto.getDni(), clientRequestDto.getPassword(), clientRequestDto.getTypeLine().name() )).thenReturn((long)2);
+        verify(userDao, times(1)).getUserByDniAndPwd("98765421", userService.hashPwd("321asd"));
+    }
 
-        User createUser = new User((long) 2, "32165498", "Juan", "Perez", "pwd123", true, Role.client, city);
-        when(userDao.getOne((long)2)).thenReturn(createUser);
+    @Test(expected = UserNotFoundException.class)
+    public void testLoginUserNotFound() throws UserNotFoundException, NoSuchAlgorithmException {
 
-        User returnedUser = userService.addClient(clientRequestDto);
+        when(userDao.getUserByDniAndPwd("user",userService.hashPwd("pwd") )).thenReturn(null);
+        userService.login("user", "pwd");
+    }
 
-        assertEquals(createUser, returnedUser);
-    }*/
+    @Test
+    public void addClientUserOk() throws NoSuchAlgorithmException, UserAlreadyExistsException, CityNotFoundException {
+
+        ClientRequestDto clientDto = new ClientRequestDto((long)1, "Joaquin", "Lopez", "98765421", "pwd123", TypeLine.home);
+        when(cityDao.getOne(clientDto.getCityId()) ).thenReturn(city);
+        when(userDao.findByDni("98765421")).thenReturn(null);
+        userService.addClient(clientDto);
+    }
 
     @Test(expected = UserAlreadyExistsException.class)
-    public void addClientAlreadyExist() throws NoSuchAlgorithmException, UserAlreadyExistsException, CityNotFoundException {
+    public void addClientUserAlreadyExist() throws NoSuchAlgorithmException, UserAlreadyExistsException, CityNotFoundException {
 
-        clientRequestDto = new ClientRequestDto((long) 1, "Agustin", "Salvador", "4333455","321asd", TypeLine.home);
-        when(userDao.findByDni(clientRequestDto.getDni())).thenThrow(UserAlreadyExistsException.class);
-        userService.addClient(clientRequestDto);
+        ClientRequestDto clientDto = new ClientRequestDto((long)1, "Joaquin", "Lopez", "98765421", "pwd123", TypeLine.home);
+        when(cityDao.getOne(clientDto.getCityId()) ).thenReturn(city);
+        when(userDao.findByDni("98765421")).thenReturn(user);
+        userService.addClient(clientDto);
     }
 
+    @Test(expected = CityNotFoundException.class)
+    public void addClientCityNotFound() throws NoSuchAlgorithmException, UserAlreadyExistsException, CityNotFoundException {
 
+        ClientRequestDto clientDto = new ClientRequestDto((long) 1234, "Abel", "Acuña", "123456","321asd", TypeLine.home);
+        when(cityDao.getOne(clientDto.getCityId()) ).thenReturn(null);
+        userService.addClient(clientDto);
+    }
 
-//
-//    @Test
-//    void login() {
-//    }
-//
-///*
-/*
-    @Test
-    void addClientCityNotFound() {
-        ClientRequestDto clientRequestDto = new ClientRequestDto((long) 1, "Santiago", "labatut", "4333455", "321asd", TypeLine.home);
-        when(userDao.findByDni(clientRequestDto.getDni())).thenReturn(null);
-        when(cityDao.findById(clientRequestDto.getCityId())).thenReturn(null);
-        assertThrows(NullPointerException.class, () -> userService.addClient(clientRequestDto));
-    }
-    */
-    @Test
-    public void addClientValidationException(){
-        /*ClientRequestDto clientRequestDto = new ClientRequestDto(null, "", "", "4333455", TypeLine.home);
-        when(userDao.findByDni(clientRequestDto.getDni())).thenReturn(null);
-        //when(cityDao.findById(clientRequestDto.getCityId())).thenReturn();
-        assertThrows(ValidationException.class, () -> userService.addClient(clientRequestDto));*/
-    }
     @Test
     public void getClientByDniOk() throws UserNotFoundException {
-        when(userDao.findByDni("4333444")).thenReturn(java.util.Optional.ofNullable(user));
+        when(userDao.findByDni("4333444")).thenReturn(user);
         User user2 = userService.getClientByDni("4333444");
         assertEquals(user2,user);
     }
-    @Test
+
+    @Test(expected = UserNotFoundException.class)
     public void getClientByDniUserNotFound() throws UserNotFoundException {
-       /* when(userDao.findByDni("4333444")).thenReturn(null);
-//        User user2 = userService.getClientByDni("4333444");
-//        assertEquals(user2,user);
-        assertThrows(UserNotFoundException.class, () -> userService.getClientByDni("4333444"));*/
+        when(userDao.findByDni("123")).thenReturn(null);
+        userService.getClientByDni("123");
     }
 
     @Test
     public void getAllClientsOk() {
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        when(userDao.findAllClients()).thenReturn(users);
-        List<User> users2 = userDao.findAllClients();
-        assertEquals(users.get(0),users2.get(0));
-        assertEquals(users.size(),users2.size());
+        when(userDao.findAllClients()).thenReturn(userList);
+        List<User> returnedUser = userService.getAllClients();
+        assertEquals(userList, returnedUser);
+        verify(userDao, times(1)).findAllClients();
     }
 
     @Test
     public void getAllClientsEmpty(){
-        List<User> users = new ArrayList<>();
-        when(userDao.findAllClients()).thenReturn(users);
-        List<User> users2 = userDao.findAllClients();
-        assertEquals(users.isEmpty(),users2.isEmpty());
-        assertEquals(users.size(),users2.size());
+        List<User> emptyList = new ArrayList<>();
+        when(userDao.findAllClients()).thenReturn(emptyList);
+        List<User> returnedUser = userService.getAllClients();
+        assertEquals(emptyList, returnedUser);
+        verify(userDao, times(1)).findAllClients();
     }
-
-//    @Test
-//    public void updateClient() throws UserNotFoundException {
-//
-//        when(cityDao.findById(user.getCity().getCityId())).thenReturn(java.util.Optional.ofNullable(city));
-//        when(userDao.findByDni(user.getDni())).thenReturn(java.util.Optional.ofNullable(user));
-//        doNothing().when(userDao).save(user);
-//        userService.updateClient("123",user);
-//        verify(userDao, times(1)).save(user);
-//    }
-
 
     @Test
-    public void deleteClientOk() {
-        /*when(userDao.findByDni(clientRequestDto.getDni())).thenReturn(java.util.Optional.ofNullable(user));
-        doNothing().when(userDao).delete(user);*/
+    public void testUpdateClientOk() throws UserNotFoundException, CityNotFoundException {
 
+        ClientRequestDto clientDto = new ClientRequestDto((long)1, "Joaquin", "Perez", "98765421", "321654", TypeLine.home);
+
+        when(cityDao.getOne(user.getCity().getCityId())).thenReturn(city);
+        when(userDao.findByDni(user.getDni())).thenReturn(user);
+        when(userDao.updateClient(clientDto.getCityId(), clientDto.getFirstname(), clientDto.getLastname(), clientDto.getDni())).thenReturn((long)25);
+        when(userDao.getOne((long)25)).thenReturn(user);
+        User modifyUser =  userService.updateClient("98765421",clientDto);
+
+        assertEquals(user.getUserId(), modifyUser.getUserId());
+        verify(userDao, times(1)).updateClient(clientDto.getCityId(), clientDto.getFirstname(), clientDto.getLastname(), clientDto.getDni());
     }
+
+    @Test
+    public void testUpdateClientFirtsnameEmpty() throws UserNotFoundException, CityNotFoundException {
+
+        ClientRequestDto clientDto = new ClientRequestDto((long)1, null, "Perez", "98765421", "321654", TypeLine.home);
+
+        when(cityDao.getOne(user.getCity().getCityId())).thenReturn(city);
+        when(userDao.findByDni(user.getDni())).thenReturn(user);
+        when(userDao.updateClient(clientDto.getCityId(), user.getFirstname(), clientDto.getLastname(), clientDto.getDni())).thenReturn((long)25);
+        when(userDao.getOne((long)25)).thenReturn(user);
+        User modifyUser =  userService.updateClient("98765421",clientDto);
+
+        assertEquals(user.getUserId(), modifyUser.getUserId());
+        verify(userDao, times(1)).updateClient(clientDto.getCityId(), user.getFirstname(), clientDto.getLastname(), clientDto.getDni());
+    }
+
+    @Test
+    public void testUpdateClientLastNameEmpty() throws UserNotFoundException, CityNotFoundException {
+
+        ClientRequestDto clientDto = new ClientRequestDto((long)1, "Jose", null, "98765421", "321654", TypeLine.home);
+
+        when(cityDao.getOne(user.getCity().getCityId())).thenReturn(city);
+        when(userDao.findByDni(user.getDni())).thenReturn(user);
+        when(userDao.updateClient(clientDto.getCityId(), clientDto.getFirstname(), user.getLastname(), clientDto.getDni())).thenReturn((long)25);
+        when(userDao.getOne((long)25)).thenReturn(user);
+        User modifyUser =  userService.updateClient("98765421",clientDto);
+
+        assertEquals(user.getUserId(), modifyUser.getUserId());
+        verify(userDao, times(1)).updateClient(clientDto.getCityId(), clientDto.getFirstname(),  user.getLastname(), clientDto.getDni());
+    }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testUpdateCityNotFound() throws UserNotFoundException, CityNotFoundException {
+
+        ClientRequestDto clientDto = new ClientRequestDto((long)55, "Joaquin", "Perez", "98765421", "321654", TypeLine.home);
+        when(cityDao.getOne(clientDto.getCityId())).thenReturn(null);
+        userService.updateClient("98765421" ,clientDto);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void testUpdateUserNotFound() throws UserNotFoundException, CityNotFoundException {
+        ClientRequestDto clientDto = new ClientRequestDto((long)55, "Joaquin", "Perez", "98765421", "321654", TypeLine.home);
+        when(cityDao.getOne(clientDto.getCityId())).thenReturn(city);
+        when(userDao.findByDni(clientDto.getDni())).thenReturn(null);
+        userService.updateClient(clientDto.getDni() ,clientDto);
+    }
+
+    @Test
+    public void testDeleteOk() throws UserNotFoundException {
+
+        when(userDao.findByDni(user.getDni())).thenReturn(user);
+        doNothing().when(userDao).removeClientByDni(user.getDni());
+        userService.deleteClient(user.getDni());
+    }
+
+    @Test(expected = UserNotFoundException.class )
+    public void testDeleteUserNotFound() throws UserNotFoundException {
+
+        when(userDao.findByDni("12345")).thenReturn(null);
+        userService.deleteClient("12345");
+    }
+
+
+
 
 }

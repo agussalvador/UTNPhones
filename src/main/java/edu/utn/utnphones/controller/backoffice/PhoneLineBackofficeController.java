@@ -6,13 +6,11 @@ import edu.utn.utnphones.dto.PhoneLineRequestDto;
 import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
+import edu.utn.utnphones.utils.UriUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,7 +28,7 @@ public class PhoneLineBackofficeController {
     public ResponseEntity newPhoneLine(@RequestBody PhoneLineRequestDto newPhoneLine) throws ValidationException, UserNotFoundException {
 
         PhoneLine phoneLine = phoneLineController.addPhoneLine(newPhoneLine);
-        return ResponseEntity.created(getLocation(phoneLine)).build();
+        return ResponseEntity.created(UriUtils.getLocation(phoneLine.getPhoneLineId())).build();
     }
 
     @GetMapping("")
@@ -48,25 +46,17 @@ public class PhoneLineBackofficeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PhoneLine> suspendPhone(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
+    public ResponseEntity suspendPhone(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException, ValidationException {
 
         phoneLineController.deletePhoneLine(idPhoneLine);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException {
+    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable("id")Long idPhoneLine) throws PhoneLineNotFoundException, ValidationException {
 
-        phoneLineController.updatePhoneLine(idPhoneLine);
-        return ResponseEntity.accepted().build();
-    }
-
-    private URI getLocation(PhoneLine phoneLine) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(phoneLine.getPhoneLineId())
-                .toUri();
+        PhoneLine phoneLine = phoneLineController.updatePhoneLine(idPhoneLine);
+        return ResponseEntity.accepted().body(phoneLine);
     }
 
 }
