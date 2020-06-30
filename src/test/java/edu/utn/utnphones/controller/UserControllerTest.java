@@ -137,10 +137,21 @@ public class UserControllerTest {
     }
 
     @Test
-    public void deleteClientOk() throws UserNotFoundException, ValidationException {
+    public void testDeleteClientOk() throws UserNotFoundException, ValidationException {
         doNothing().when(userService).deleteClient("123");
         userController.deleteClient("123");
         verify(userService, times(1)).deleteClient("123");
     }
+
+    @Test
+    public void testDeleteClientDniNull(){
+        assertThrows(ValidationException.class, () -> userController.deleteClient(null) );
+    }
+
+    @Test
+    public void testDeleteClientDniEmpty(){
+        assertThrows(ValidationException.class, () -> userController.deleteClient("") );
+    }
+
 }
 
