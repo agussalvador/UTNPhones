@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -77,9 +76,6 @@ public class PhoneLineControllerTest {
         phoneLineController.addPhoneLine(phoneLineDto);
     }
 
-
-
-
     //GetPhoneLinesByUserDni
     @Test
     public void testGetPhoneLinesByUserDniOk() throws UserNotFoundException, ValidationException {
@@ -105,8 +101,6 @@ public class PhoneLineControllerTest {
     public void testGetPhoneLinesByUserDniDniNull() throws UserNotFoundException, ValidationException {
         phoneLineController.getPhoneLinesByUserDni(null);
     }
-
-
 
     //GetPhoneLines
     @Test
@@ -135,7 +129,6 @@ public class PhoneLineControllerTest {
         phoneLineController.deletePhoneLine((long)987);
     }
 
-
     //UpdatePhoneLine
     @Test
     public void testUpdatePhoneLineOk() throws PhoneLineNotFoundException {
@@ -151,13 +144,7 @@ public class PhoneLineControllerTest {
 
         when(phoneLineService.updatePhoneLine((long)987)).thenThrow(PhoneLineNotFoundException.class);
         phoneLineController.updatePhoneLine((long)987);
-
-
     }
-
-
-
-
 
 
 }

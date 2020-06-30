@@ -28,7 +28,7 @@ public class BillBackOfficeController {
     @GetMapping()
     public ResponseEntity<List<Bill>> getBillsByUser(@RequestParam("dni_client") String dni) throws UserNotFoundException, ValidationException {
         List<Bill> bills = billController.getBillsByUserDni(dni);
-        return (bills.size() != 0) ? ResponseEntity.ok(bills) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (bills.size() != 0) ? ResponseEntity.ok(bills) : ResponseEntity.noContent().build();
     }
 
 }

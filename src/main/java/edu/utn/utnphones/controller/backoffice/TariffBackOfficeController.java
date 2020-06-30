@@ -24,12 +24,10 @@ import java.util.List;
 public class TariffBackOfficeController {
 
     private final TariffController tariffController;
-    private final SessionManager sessionManager;
 
     @Autowired
-    public TariffBackOfficeController(TariffController tariffController, SessionManager sessionManager) {
+    public TariffBackOfficeController(TariffController tariffController) {
         this.tariffController = tariffController;
-        this.sessionManager = sessionManager;
     }
 
 
@@ -48,29 +46,19 @@ public class TariffBackOfficeController {
         return (tariffs.size() > 0) ? ResponseEntity.ok(tariffs) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-//    @PutMapping
-//    public ResponseEntity updateTariff(@RequestHeader("Authorization") String sessionToken, @RequestBody TariffRequestDto tariff){
-//
-//        try{
-//            tariffController.updateTariff(tariff);
-//            return ResponseEntity.accepted().build();
-//        }catch (JpaSystemException ex){
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{idCityOrigin}/{idCityDestination}")
-//    public ResponseEntity deleteTariff(@RequestHeader("Authorization") String sessionToken, @PathVariable Integer idCityOrigin, @PathVariable Integer idCityDestination){
-//
-//        try{
-//            tariffController.deleteTariff(idCityOrigin,idCityDestination);
-//            return ResponseEntity.ok().build();
-//
-//            ResponseEntity.created();
-//        }catch (JpaSystemException ex){
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    @PutMapping
+    public ResponseEntity updateTariff(@RequestBody TariffRequestDto tariff){
+
+        tariffController.updateTariff(tariff);
+        return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("/{idCityOrigin}/{idCityDestination}")
+    public ResponseEntity deleteTariff(@PathVariable Integer idCityOrigin, @PathVariable Integer idCityDestination){
+
+        tariffController.deleteTariff(idCityOrigin,idCityDestination);
+        return ResponseEntity.ok().build();
+    }
 
 
 

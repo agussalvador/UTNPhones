@@ -31,9 +31,8 @@ public class UserService {
         return userDao.getOne(idUser);
     }
 
-    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, CityNotFoundException, NoSuchAlgorithmException {
 
-        if(!newClient.isValid()) throw new ValidationException("Error - does not include all necessary information ");
         Optional<User> user = userDao.findByDni(newClient.getDni());
         if(user.isPresent()) throw new UserAlreadyExistsException();
         cityDao.findById(newClient.getCityId()).orElseThrow(()->new CityNotFoundException());

@@ -22,14 +22,15 @@ public class UserController {
     }
 
     public User login(String dni, String password) throws UserNotFoundException, ValidationException, InvalidLoginException, NoSuchAlgorithmException {
-        if ((dni!=null) && (password!=null)) {
+        if ( (dni != null) &&(!dni.isEmpty()) && (password != null)&&(!password.isEmpty()) ){
             return userService.login(dni, password);
         } else {
             throw new ValidationException("dni and password must have a value");
         }
     }
 
-    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, JpaSystemException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
+    public User addClient (ClientRequestDto newClient) throws UserAlreadyExistsException, ValidationException, CityNotFoundException, NoSuchAlgorithmException {
+        if(!newClient.isValid()) throw new ValidationException("Error - does not include all necessary information ");
         return userService.addClient(newClient);
     }
 
@@ -45,10 +46,7 @@ public class UserController {
         return userService.getAllClients();
     }
 
-
-
     public void updateClient(String dni, ClientRequestDto newClient) throws UserNotFoundException, CityNotFoundException, ValidationException {
-
         if ((dni != null) &&(!dni.isEmpty()) ) {
             userService.updateClient(dni, newClient);
         } else {
@@ -57,7 +55,6 @@ public class UserController {
     }
 
     public void deleteClient(String  dni) throws ValidationException, UserNotFoundException {
-
         if ((dni != null) &&(!dni.isEmpty()) ) {
             userService.deleteClient(dni);
         } else {

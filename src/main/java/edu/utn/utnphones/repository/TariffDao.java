@@ -19,18 +19,6 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
                          @Param("pCost_price") Double costPrice,
                          @Param("pPrice") Double price) throws DataAccessException;
 
-//    /*UPDATE*/
-//    @Procedure(procedureName = "sp_update_tariff"/*, outputParameterName = "pIdTariff"*/)
-//    public void update(@Param("pId_city_origin") Long idCityOrigin,
-//                       @Param("pId_city_destination") Long idCityDestination,
-//                       @Param("pCost_price") Double costPrice,
-//                       @Param("pPrice") Double price);
-//
-//    /*DELETE*/
-//    @Procedure(procedureName = "sp_delete_tariff")
-//    public  void delete(@Param("pId_city_origin") Integer idCityOrigin,
-//                        @Param("pId_city_destination") Integer idCityDestination);
-
     /*READ*/
     @Query(value = "SELECT t.* FROM tariffs t ", nativeQuery = true)
     List<Tariff> getAllTariffs()throws JpaSystemException;
@@ -38,6 +26,19 @@ public interface TariffDao extends JpaRepository <Tariff, Integer> {
 
     @Query(value = "SELECT t.* FROM tariffs t t.id = :id", nativeQuery = true)
     Tariff getById(@Param("id") Long id);
+
+        /*UPDATE*/
+    @Procedure(procedureName = "sp_update_tariff")
+    public void update(@Param("pId_city_origin") Long idCityOrigin,
+                       @Param("pId_city_destination") Long idCityDestination,
+                       @Param("pCost_price") Double costPrice,
+                       @Param("pPrice") Double price);
+
+    /*DELETE*/
+    @Procedure(procedureName = "sp_delete_tariff")
+    public  void delete(@Param("pId_city_origin") Integer idCityOrigin,
+                        @Param("pId_city_destination") Integer idCityDestination);
+
 
 
 }

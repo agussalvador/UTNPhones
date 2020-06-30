@@ -31,15 +31,15 @@ public class TariffController {
     }
 
 
-//
-//    public void updateTariff (@RequestBody TariffRequestDto tariff){
-//        tariffService.updateTariff(tariff);
-//    }
-//
-//
-//    public void deleteTariff(@PathVariable Integer idCityOrigin, @PathVariable Integer idCityDestination){
-//        tariffService.deleteTariff(idCityOrigin,idCityDestination);
-//    }
+
+    public void updateTariff ( TariffRequestDto tariff){
+        tariffService.updateTariff(tariff);
+    }
+
+
+    public void deleteTariff(Integer idCityOrigin, Integer idCityDestination){
+        tariffService.deleteTariff(idCityOrigin,idCityDestination);
+    }
 
 
 

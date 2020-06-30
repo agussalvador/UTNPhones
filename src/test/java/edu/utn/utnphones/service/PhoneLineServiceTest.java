@@ -95,9 +95,7 @@ public class PhoneLineServiceTest {
     public void testGetPhoneLinesOk(){
 
         when(phoneLineDao.getPhoneLines()).thenReturn(phoneLines);
-
         List<PhoneLine> returnedPhoneLines = phoneLineService.getPhoneLines();
-
         assertEquals(phoneLines, returnedPhoneLines);
     }
 

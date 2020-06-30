@@ -19,11 +19,11 @@ public class ClientRequestDto implements Serializable {
 
     private String firstname;
 
-    private String password;
-
     private String lastname;
 
     private String dni;
+
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private TypeLine typeLine;

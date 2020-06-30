@@ -20,7 +20,6 @@ public class BillController {
         this.billService = billService;
     }
 
-
     public List<Bill>getBillsByUserId(Long id) {
         return billService.getBillsByUserId(id);
     }

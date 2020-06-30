@@ -10,6 +10,7 @@ import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.TariffDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,16 +51,16 @@ public class TariffService {
         return tariffDao.getAllTariffs();
     }
 
-//    /*UPDATE*/
-//    public void updateTariff(TariffRequestDto tariff) throws JpaSystemException{
-//        dao.update(tariff.getCityOrigin().getCityId(), tariff.getCityDestination().getCityId(),
-//                tariff.getCostPrice(),tariff.getPrice());
-//    }
-//
-//    /*DELETE*/
-//    public void deleteTariff(Integer idCityOrigin, Integer idCityDestination)throws JpaSystemException{
-//        dao.delete(idCityOrigin,idCityDestination);
-//    }
+    /*UPDATE*/
+    public void updateTariff(TariffRequestDto tariff) {
+        tariffDao.update(tariff.getCityOriginId(), tariff.getCityDestinationId(),
+                tariff.getCostPrice(),tariff.getPrice());
+    }
+
+    /*DELETE*/
+    public void deleteTariff(Integer idCityOrigin, Integer idCityDestination){
+        tariffDao.delete(idCityOrigin,idCityDestination);
+    }
 
 
 }
