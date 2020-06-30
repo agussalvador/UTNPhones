@@ -6,7 +6,6 @@ import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
 import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.service.TariffService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

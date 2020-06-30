@@ -4,7 +4,6 @@ import edu.utn.utnphones.controller.TariffController;
 import edu.utn.utnphones.domain.Tariff;
 import edu.utn.utnphones.dto.TariffRequestDto;
 import org.junit.Before;
-
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;

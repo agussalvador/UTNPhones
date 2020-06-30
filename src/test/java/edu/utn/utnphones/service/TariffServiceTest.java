@@ -7,21 +7,14 @@ import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.TariffDao;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
-import org.omg.CORBA.DATA_CONVERSION;
-import org.springframework.core.NestedRuntimeException;
-import org.springframework.dao.DataAccessException;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 

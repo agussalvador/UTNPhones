@@ -4,7 +4,6 @@ import edu.utn.utnphones.controller.CallController;
 import edu.utn.utnphones.domain.Call;
 import edu.utn.utnphones.dto.CallRequestDto;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.session.SessionManager;
 import edu.utn.utnphones.utils.UriUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.text.ParseException;
 
 @RestController

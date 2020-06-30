@@ -6,7 +6,6 @@ import edu.utn.utnphones.domain.enums.TypeLine;
 import edu.utn.utnphones.dto.ClientRequestDto;
 import edu.utn.utnphones.exceptions.*;
 import edu.utn.utnphones.service.UserService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

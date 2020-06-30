@@ -5,20 +5,13 @@ import edu.utn.utnphones.controller.PhoneLineController;
 import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.domain.enums.TypeLine;
 import edu.utn.utnphones.dto.PhoneLineRequestDto;
-import edu.utn.utnphones.exceptions.PhoneLineNotFoundException;
 import edu.utn.utnphones.exceptions.UserNotFoundException;
 import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.projection.CallView;
-import edu.utn.utnphones.service.PhoneLineService;
-import edu.utn.utnphones.utils.UriUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 

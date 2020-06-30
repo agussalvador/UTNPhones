@@ -5,12 +5,10 @@ import edu.utn.utnphones.domain.Tariff;
 import edu.utn.utnphones.dto.TariffRequestDto;
 import edu.utn.utnphones.exceptions.CityNotFoundException;
 import edu.utn.utnphones.exceptions.TarriffAlreadyExistsException;
-import edu.utn.utnphones.exceptions.ValidationException;
 import edu.utn.utnphones.repository.CityDao;
 import edu.utn.utnphones.repository.TariffDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

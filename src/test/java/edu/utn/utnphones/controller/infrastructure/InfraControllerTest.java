@@ -6,23 +6,14 @@ import edu.utn.utnphones.domain.City;
 import edu.utn.utnphones.domain.PhoneLine;
 import edu.utn.utnphones.domain.enums.TypeLine;
 import edu.utn.utnphones.dto.CallRequestDto;
-import edu.utn.utnphones.exceptions.ValidationException;
-import edu.utn.utnphones.repository.CallDao;
-import org.junit.Test;
 import org.mockito.Mock;
-import org.springframework.http.ResponseEntity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class InfraControllerTest {
